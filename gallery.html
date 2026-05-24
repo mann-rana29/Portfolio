@@ -23,9 +23,9 @@
       --text-dim: #a8a29e;
       --text-muted: #57534e;
       --accent: #fafaf9;
-      --accent-green: #f59e0b;
-      --accent-blue: #f59e0b;
-      --accent-purple: #d97706;
+      --accent-green: #fbbf24;
+      --accent-blue: #fbbf24;
+      --accent-purple: #f59e0b;
       --grid: rgba(245, 158, 11, 0.025);
       --font: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --radius: 8px;
@@ -41,9 +41,9 @@
       --text-dim: #78716c;
       --text-muted: #a8a29e;
       --accent: #1c1917;
-      --accent-green: #d97706;
-      --accent-blue: #d97706;
-      --accent-purple: #b45309;
+      --accent-green: #f59e0b;
+      --accent-blue: #f59e0b;
+      --accent-purple: #d97706;
       --grid: rgba(0, 0, 0, 0.03);
     }
 
@@ -56,6 +56,11 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    ::selection {
+      background: var(--accent-green);
+      color: var(--bg);
     }
 
     html {
