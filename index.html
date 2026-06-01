@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     /* ════════════════════════════════════════
        DESIGN TOKENS
@@ -209,8 +210,23 @@
         padding: 0 12px;
       }
 
-      .btn-sm:not(.hamburger) {
-        display: none;
+      .nav-logo {
+        font-size: 0;
+      }
+      
+      .nav-avatar {
+        margin-right: auto;
+        width: 28px;
+        height: 28px;
+      }
+
+      .btn-sm {
+        padding: 0 10px;
+        font-size: 0.75rem;
+      }
+      
+      .nav-right {
+        gap: 6px;
       }
     }
 
@@ -291,13 +307,16 @@
     }
 
     .btn-sm.primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
+      background: rgba(234, 179, 8, 0.15);
+      color: #eab308;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+      font-weight: 600;
     }
 
     .btn-sm.primary:hover {
-      opacity: 0.85;
+      background: rgba(234, 179, 8, 0.25);
+      border-color: #eab308;
+      opacity: 1;
     }
 
     .theme-btn {
@@ -583,6 +602,33 @@
     }
 
     .btn-outline:hover {
+      border-color: var(--text-dim);
+      color: var(--text);
+      background: var(--surface2);
+      transform: translateY(-1px);
+    }
+
+    .social-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-btn-lg {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-mid);
+      background: transparent;
+      color: var(--text-dim);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.22s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .icon-btn-lg:hover {
       border-color: var(--text-dim);
       color: var(--text);
       background: var(--surface2);
@@ -1014,78 +1060,122 @@
       }
     }
 
-    .project-image {
+    .project-showcase {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid var(--border-mid);
-      margin-bottom: 16px;
-      background: var(--surface2);
-      display: block;
-    }
-
-    .project-gallery-wrapper {
+      height: 220px;
+      border-radius: 8px;
+      margin-bottom: 20px;
       position: relative;
-      margin-bottom: 16px;
-    }
-
-    .project-gallery {
-      display: flex;
-      overflow-x: auto;
-      gap: 8px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: none;
-      border-radius: 6px;
-      scroll-behavior: smooth;
-    }
-
-    .project-gallery::-webkit-scrollbar {
-      display: none;
-    }
-
-    .project-gallery img {
-      width: 100%;
-      flex: 0 0 100%;
-      height: 180px;
-      object-fit: contain;
-      scroll-snap-align: start;
-      border: 1px solid var(--border-mid);
-      border-radius: 6px;
-      background: var(--surface2);
-    }
-
-    .gallery-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-      border: none;
+      background-size: cover;
+      background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      opacity: 0.7;
-      transition: all 0.2s;
+      cursor: zoom-in;
+      overflow: hidden;
+      border: 1px solid var(--border-mid);
+      perspective: 1000px;
     }
 
-    .gallery-nav:hover {
+    .project-showcase::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .project-showcase:hover::after {
       opacity: 1;
-      background: rgba(0, 0, 0, 0.9);
     }
 
-    .gallery-nav.prev {
-      left: 6px;
+    .mockup-browser, .mockup-phone {
+      position: relative;
+      background: #111;
+      border: 1px solid var(--border-mid);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
     }
 
-    .gallery-nav.next {
-      right: 6px;
+    .project-showcase:hover .mockup-browser,
+    .project-showcase:hover .mockup-phone {
+      transform: scale(1.04) translateY(-4px);
     }
+
+    .mockup-browser {
+      width: 85%;
+      height: 80%;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-browser-header {
+      height: 16px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border-mid);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 5px;
+    }
+
+    .mockup-browser-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .mockup-browser-dot.red { background: #ff5f56; }
+    .mockup-browser-dot.yellow { background: #ffbd2e; }
+    .mockup-browser-dot.green { background: #27c93f; }
+
+    .mockup-browser-content {
+      flex: 1;
+      width: 100%;
+      background: #000;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .mockup-browser-content img, .mockup-browser-content video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    .mockup-phone {
+      height: 90%;
+      aspect-ratio: 9/19;
+      border-radius: 12px;
+      border: 3px solid var(--surface2);
+      background: #000;
+    }
+
+    .mockup-phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 35%;
+      height: 10px;
+      background: var(--surface2);
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      z-index: 2;
+    }
+
+    .mockup-phone img, .mockup-phone video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
 
     .project-name {
       font-size: 1.05rem;
@@ -1582,10 +1672,11 @@
         <div class="nav-links">
           <a href="#projects">Projects</a>
           <a href="#about">About</a>
+          <a href="#stack">Stack</a>
           <a href="gallery.html">Gallery</a>
         </div>
         <div class="nav-right">
-          <a href="https://drive.google.com/file/d/1k3pTefwM_LXwX2KV3gWnrFddYPi7e9p9/view?usp=sharing" class="btn-sm"
+          <a href="https://drive.google.com/file/d/1k3pTefwM_LXwX2KV3gWnrFddYPi7e9p9/view?usp=sharing" class="btn-sm primary"
             target="_blank">Resume</a>
           <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
             <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1618,8 +1709,8 @@
       <div class="mobile-menu" id="mobileMenu">
         <a href="#projects" onclick="closeMobile()">Projects</a>
         <a href="#about" onclick="closeMobile()">About</a>
+        <a href="#stack" onclick="closeMobile()">Stack</a>
         <a href="gallery.html">Gallery</a>
-        <a href="https://drive.google.com/file/d/11TanMrwcABUdIlFyUBL9ThD_KpkOMIz-/view?usp=drive_link" target="_blank">Resume</a>
       </div>
     </nav>
 
@@ -1748,315 +1839,7 @@
       </div>
     </section>
 
-    <!-- ── PROJECTS ── -->
-    <section id="projects" style="padding: 56px 20px 0;">
-      <div class="section-label reveal">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="7" />
-          <rect x="14" y="3" width="7" height="7" />
-          <rect x="14" y="14" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" />
-        </svg>
-        Projects
-      </div>
-      <div class="projects-grid">
-
-        <div class="project-card reveal">
-          <div class="project-gallery-wrapper">
-            <button class="gallery-nav prev" aria-label="Previous">‹</button>
-            <div class="project-gallery">
-              <img
-                src="https://res.cloudinary.com/mannr075/image/upload/v1779405996/Screenshot_2026-04-08_224722_dyustx.png"
-                alt="Gallery Image 0" />
-              <img
-                src="https://res.cloudinary.com/mannr075/image/upload/v1779403681/Screenshot_2026-05-22_041653_qowruk.png"
-                alt="Gallery Image 1" />
-              <img
-                src="https://res.cloudinary.com/mannr075/image/upload/v1779404162/Screenshot_2026-05-05_190544_rx1mcr.png"
-                alt="Gallery Image 2" />
-              <img
-                src="https://res.cloudinary.com/mannr075/image/upload/v1779404162/Screenshot_2026-05-05_191422_apwpnx.png"
-                alt="Gallery Image 3" />
-            </div>
-            <button class="gallery-nav next" aria-label="Next">›</button>
-          </div>
-          <div class="project-name">Chokho AI</div>
-          <div class="project-desc">It is a smart waste management and monitoring system. It is built for citizens to
-            report trash and optimize the cleaning routes for MCD vehicles.</div>
-          <div class="project-tags">
-            <span class="project-tag">Spring Boot</span>
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">PostgreSQL</span>
-            <span class="project-tag">YOLO</span>
-            <span class="project-tag">Google Gemini</span>
-            <span class="project-tag">Docker</span>
-          </div>
-          <div class="project-actions">
-            <a href="https://github.com/ChokhoAI" target="_blank" class="btn-proj">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-              Code
-            </a>
-            <a href="https://chokho-frontend.vercel.app/" target="_blank" class="btn-proj demo">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <polygon points="10 8 16 12 10 16 10 8" />
-              </svg>
-              Live
-            </a>
-          </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-1">
-          <video class="project-image" autoplay loop muted playsinline>
-            <source src="https://res.cloudinary.com/mannr075/video/upload/v1779404299/demo_qjrurr.mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
-          </video>
-          <div class="project-name">DrawMind</div>
-          <div class="project-desc">It is a conversational UML diagram generator, which is built for developers
-            and students to make UML diagrams by just writing a single line in natural language. It also supports
-            updates or changes in the diagram. </div>
-          <div class="project-tags">
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">PostgreSQL</span>
-            <span class="project-tag">Google Gemini</span>
-            <span class="project-tag">Pydantic</span>
-            <span class="project-tag">REST APIs</span>
-
-
-          </div>
-          <div class="project-actions">
-            <a href="https://github.com/mann-rana29/DrawMind" target="_blank" class="btn-proj">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-              Code
-            </a>
-            <a href="https://draw-mind.vercel.app/" target="_blank" class="btn-proj demo">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <polygon points="10 8 16 12 10 16 10 8" />
-              </svg>
-              Live
-            </a>
-          </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-2">
-          <video class="project-image" autoplay loop muted playsinline>
-            <source src="https://res.cloudinary.com/mannr075/video/upload/v1779405224/demo_2_uwgykp.mp4"
-              type="video/mp4">
-            Your browser does not support HTML5 video.
-          </video>
-          <div class="project-name">Dagadaya</div>
-          <div class="project-desc">It is a phone call based helpline. It is built for farmers to get real time weather
-            alerts, crop advisory, market prices of their crops, and insurance claims support.</div>
-          <div class="project-tags">
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">Websockets</span>
-            <span class="project-tag">Twilio</span>
-            <span class="project-tag">Sarvam AI</span>
-            <span class="project-tag">Groq</span>
-            <span class="project-tag">Pipecat</span>
-
-
-          </div>
-          <div class="project-actions">
-            <a href="https://github.com/mann-rana29/Dagadya" target="_blank" class="btn-proj">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-              Code
-            </a>
-          </div>
-        </div>
-
-        <div class="project-card reveal reveal-delay-3 cta-card-override"
-          style="position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 30px; height: 100%;">
-
-          <style>
-            
-
-            .cta-card-override {
-              min-height: 400px;
-              background: transparent !important;
-              border: 1px dashed var(--border-mid) !important;
-            }
-
-            .cta-card-override:hover {
-              background: transparent !important;
-              border: 1px dashed var(--border-mid) !important;
-              box-shadow: none !important;
-            }
-
-            @keyframes flowShape {
-              0% {
-                border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-                transform: rotate(0deg) scale(1);
-              }
-
-              50% {
-                border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
-                transform: rotate(180deg) scale(1.05);
-              }
-
-              100% {
-                border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-                transform: rotate(360deg) scale(1);
-              }
-            }
-
-            .cta-blob {
-              position: absolute;
-              width: 260px;
-              height: 260px;
-              background: linear-gradient(135deg, #fef04e, #f78a1e, #f71e1e);
-              animation: flowShape 12s ease-in-out infinite;
-              z-index: 0;
-              opacity: 0.5;
-              filter: blur(10px);
-              transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-
-            .project-card:hover .cta-blob {
-              transform: scale(1.2) rotate(45deg);
-              opacity: 0.8;
-              filter: blur(15px) hue-rotate(40deg);
-            }
-
-            .cta-content {
-              position: relative;
-              z-index: 1;
-            }
-          </style>
-
-          <div class="cta-blob"></div>
-
-          <div class="cta-content">
-            <h3
-              style="font-size: 2.4rem; font-weight: 800; margin-bottom: 16px; line-height: 1.2;">
-              Let's Talk</h3>
-            <p
-              style="margin-bottom: 32px; font-size: 1.05rem; line-height: 1.6; max-width: 95%; margin-left: auto; margin-right: auto;">
-              Have a project in mind or just want to connect? Check out my GitHub or send me a message!</p>
-            <div style="display: flex; justify-content: center; width: 100%; gap: 12px; flex-wrap: wrap;">
-              <a href="https://github.com/mann-rana29" target="_blank" class="btn-proj"
-                style="padding: 10px 20px; font-size: 0.95rem;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path
-                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                  </path>
-                </svg>
-                GitHub
-              </a>
-              <a href="mailto:mannworks247@gmail.com" class="btn-proj demo"
-                style="padding: 10px 20px; font-size: 0.95rem;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                Contact Me
-              </a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ── ABOUT ── -->
-    <section id="about" style="padding: 56px 20px;">
-      <div class="section-label reveal">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-        About Me
-      </div>
-      <div class="about-grid">
-        <div class="about-text reveal">
-          <h2>Developer <span>who ships late night ideas as real products.</span></h2>
-
-          <p>My name is Mann Rana. I am a final year student at UPES, Dehradun specializing in AI/ML. </p>
-
-          <p>I enjoy working with modern backend technologies, APIs and AI-driven products. My interests include machine learning, deep learning, and integrating intelligent systems into practical applications.</p>
-
-          <div class="about-meta">
-            <div class="meta-row">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-              <span><strong>Dehradun, India</strong></span>
-            </div>
-            <div class="meta-row">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              <span>Graduating <strong>2027</strong> - B.Tech CSE</span>
-            </div>
-            <div class="meta-row">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <span>Currently learning : <strong>System Design </strong></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="about-right reveal reveal-delay-2">
-          <div class="info-block">
-            <div class="info-block-label">Education</div>
-            <div class="info-block-value">
-              University of Petroleum and Energy Studies
-              <small>B.Tech in Computer Science Engineering · 2023–2027</small>
-            </div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Role</div>
-            <div class="info-block-value">
-              SWE / AI / Backend
-              <small>Open to opportunities</small>
-            </div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Other Interests</div>
-            <div class="info-block-value">
-              Volleyball | Basketball | Football
-              <small>Anime · Photography · Music</small>
-            </div>
-          </div>
-          <div class="info-block">
-            <div class="info-block-label">Languages</div>
-            <div class="info-block-value">
-              English
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── TECH STACK ── -->
+     <!-- ── TECH STACK ── -->
     <section id="stack" style="padding: 56px 20px;">
       <div class="section-label reveal">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -2121,11 +1904,28 @@
 
         <div class="tech-pill">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+          Redis
+        </div>
+
+        <div class="tech-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
             <line x1="12" y1="22.08" x2="12" y2="12"/>
           </svg>
           Docker
+        </div>
+
+        <div class="tech-pill">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          cURL
         </div>
 
         <div class="tech-pill">
@@ -2145,33 +1945,266 @@
           GitHub
         </div>
 
-        <div class="tech-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-          Postman
-        </div>
 
-        <div class="tech-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".85">
-            <path d="M12 1L24 22H0L12 1Z" />
-          </svg>
-          Vercel
-        </div>
 
-        <div class="tech-pill">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="16 18 22 12 16 6" />
-            <polyline points="8 6 2 12 8 18" />
-            <line x1="12" y1="2" x2="12" y2="22" />
-          </svg>
-          VS Code
-        </div>
+
 
       </div>
     </section>
+
+
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects" style="padding: 56px 20px 0;">
+      <div class="section-label reveal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Projects
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card reveal">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('chokho')">
+            <div class="mockup-browser">
+              <div class="mockup-browser-header">
+                <div class="mockup-browser-dot red"></div>
+                <div class="mockup-browser-dot yellow"></div>
+                <div class="mockup-browser-dot green"></div>
+              </div>
+              <div class="mockup-browser-content">
+                <img src="https://res.cloudinary.com/mannr075/image/upload/v1779405996/Screenshot_2026-04-08_224722_dyustx.png" alt="Chokho AI" />
+              </div>
+            </div>
+          </div>
+          <div class="project-name">Chokho AI</div>
+          <div class="project-desc">A smart waste management and monitoring system for citizens to
+            report trash and optimize the cleaning routes for MCD vehicles.</div>
+          <div class="project-tags">
+            <span class="project-tag">Spring Boot</span>
+            <span class="project-tag">FastAPI</span>
+            <span class="project-tag">PostgreSQL</span>
+            <span class="project-tag">YOLO</span>
+            <span class="project-tag">Google Gemini</span>
+            <span class="project-tag">Docker</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/ChokhoAI" target="_blank" class="btn-proj">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+              Code
+            </a>
+            <a href="https://chokho-frontend.vercel.app/" target="_blank" class="btn-proj demo">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+              Live
+            </a>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('drawmind')">
+            <div class="mockup-browser">
+              <div class="mockup-browser-header">
+                <div class="mockup-browser-dot red"></div>
+                <div class="mockup-browser-dot yellow"></div>
+                <div class="mockup-browser-dot green"></div>
+              </div>
+              <div class="mockup-browser-content">
+                <video autoplay loop muted playsinline>
+                  <source src="https://res.cloudinary.com/mannr075/video/upload/v1779404299/demo_qjrurr.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+          <div class="project-name">DrawMind</div>
+          <div class="project-desc">A conversational UML diagram generator for developers
+            and students to make UML diagrams by just writing a single line in natural language. It also supports
+            updates or changes in the diagram. </div>
+          <div class="project-tags">
+            <span class="project-tag">FastAPI</span>
+            <span class="project-tag">PostgreSQL</span>
+            <span class="project-tag">Google Gemini</span>
+            <span class="project-tag">Pydantic</span>
+            <span class="project-tag">REST APIs</span>
+
+
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/mann-rana29/DrawMind" target="_blank" class="btn-proj">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+              Code
+            </a>
+            <a href="https://draw-mind.vercel.app/" target="_blank" class="btn-proj demo">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+              Live
+            </a>
+          </div>
+        </div>
+
+        <!--
+        <div class="project-card reveal reveal-delay-2">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('dagadaya')">
+            <div class="mockup-phone">
+              <div class="mockup-phone-notch"></div>
+              <video autoplay loop muted playsinline>
+                <source src="https://res.cloudinary.com/mannr075/video/upload/v1779405224/demo_2_uwgykp.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="project-name">Dagadaya</div>
+          <div class="project-desc">A phone call based helpline for farmers to get real time weather
+            alerts, crop advisory, market prices of their crops, and insurance claims support.</div>
+          <div class="project-tags">
+            <span class="project-tag">FastAPI</span>
+            <span class="project-tag">Websockets</span>
+            <span class="project-tag">Twilio</span>
+            <span class="project-tag">Sarvam AI</span>
+            <span class="project-tag">Groq</span>
+            <span class="project-tag">Pipecat</span>
+
+
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/mann-rana29/Dagadya" target="_blank" class="btn-proj">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+              Code
+            </a>
+          </div>
+        </div>
+        -->
+
+
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section id="about" style="padding: 56px 20px;">
+      <div class="section-label reveal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        About Me
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <h2>Developer <span>who ships late night ideas as real products.</span></h2>
+
+          <p>My name is Mann Rana. I am a final year student at UPES, Dehradun specializing in AI/ML. </p>
+
+          <p>I enjoy working with modern backend technologies, APIs and AI-driven products. My interests include machine learning, deep learning, and integrating intelligent systems into practical applications.</p>
+
+          <div class="about-meta">
+            <div class="meta-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              <span><strong>Dehradun, India</strong></span>
+            </div>
+            <div class="meta-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              <span>Graduating <strong>2027</strong> - B.Tech CSE</span>
+            </div>
+            <div class="meta-row">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span>Currently learning : <strong>System Design </strong></span>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="about-right reveal reveal-delay-2">
+          <div class="info-block">
+            <div class="info-block-label">Education</div>
+            <div class="info-block-value">
+              University of Petroleum and Energy Studies
+              <small>B.Tech in Computer Science Engineering · 2023–2027</small>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">Role</div>
+            <div class="info-block-value">
+              SWE / AI / Backend
+              <small>Open to opportunities</small>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">Other Interests</div>
+            <div class="info-block-value">
+              Volleyball | Basketball | Football
+              <small>Anime · Photography · Music</small>
+            </div>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">Languages</div>
+            <div class="info-block-value">
+              English
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+   
+
+    
+
+        <!-- ── TYPING STATS ── -->
+    <section id="stats" style="padding: 56px 20px 0;">
+      <div class="section-label reveal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+        MonkeyType Stats
+      </div>
+      <div class="stats-container reveal" style="position: relative; width: 100%; margin-bottom: 40px; background: transparent; padding: 10px 0;">
+        <div style="height: 350px; width: 100%;">
+          <canvas id="typingChart"></canvas>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 12px; padding: 0 10px;">
+          <div style="font-family: monospace; font-size: 0.85rem; color: var(--text-dim);">User: <a href="https://monkeytype.com/profile/the25thjin" target="_blank" style="color: #eab308; text-decoration: none;">@the25thjin</a> &nbsp;|&nbsp; 60s PB: <span style="color: var(--text);">82 wpm (95% acc)</span> &nbsp;|&nbsp; 10 words PB: <span style="color: var(--text);">118 wpm</span></div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- Github Contributions -->
 
     <section id="github-graph" style="padding: 56px 20px 0;">
       <style>
@@ -2185,9 +2218,14 @@
         </svg>
         GitHub Contributions
       </div>
-      <div class="reveal" style="display: flex; justify-content: center; width: 100%; border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 12px; background: var(--surface2); overflow: hidden; margin-bottom: 40px;">
-        <img class="gh-graph-dark" src="https://github-readme-activity-graph.vercel.app/graph?username=mann-rana29&bg_color=1c1917&color=fafaf9&line=f59e0b&point=fafaf9&area=true&hide_border=true" style="width: 100%; height: auto; max-width: 100%;" alt="GitHub Contributions Graph Dark" />
-        <img class="gh-graph-light" src="https://github-readme-activity-graph.vercel.app/graph?username=mann-rana29&bg_color=f5f5f4&color=1c1917&line=f59e0b&point=1c1917&area=true&hide_border=true" style="width: 100%; height: auto; max-width: 100%;" alt="GitHub Contributions Graph Light" />
+      <!-- <div class="reveal" style="display: flex; justify-content: center; width: 100%; margin-bottom: 40px;">
+        <img class="gh-graph-dark" src="https://github-readme-activity-graph.vercel.app/graph?username=mann-rana29&bg_color=1c1917&color=a8a29e&line=eab308&point=eab308&area=true&area_color=eab308&hide_border=true&v=3" style="width: 100%; height: auto; max-width: 100%; border-radius: var(--radius); border: 1px solid var(--border-mid);" alt="GitHub Contributions Graph Dark" />
+        <img class="gh-graph-light" src="https://github-readme-activity-graph.vercel.app/graph?username=mann-rana29&bg_color=f5f5f4&color=57534e&line=eab308&point=eab308&area=true&area_color=eab308&hide_border=true&v=3" style="width: 100%; height: auto; max-width: 100%; border-radius: var(--radius); border: 1px solid var(--border-mid);" alt="GitHub Contributions Graph Light" />
+      </div> -->
+
+      <div class="reveal" style="display: flex; justify-content: center; width: 100%; margin-bottom: 40px; overflow-x: auto; padding-bottom: 10px;">
+        <img class="gh-graph-dark" src="https://ghchart.rshah.org/eab308/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px; filter: invert(1) hue-rotate(180deg) brightness(1.2);" alt="GitHub Contributions Grid Dark" />
+        <img class="gh-graph-light" src="https://ghchart.rshah.org/eab308/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px;" alt="GitHub Contributions Grid Light" />
       </div>
     </section>
 
@@ -2221,6 +2259,19 @@
           <a href="https://leetcode.com/u/mann60" target="_blank" class="footer-icon-btn" title="LeetCode">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.702-1.15-.702-1.863s.235-1.357.702-1.824l4.319-4.38c.467-.467 1.125-.645 1.837-.645s1.357.195 1.823.662l2.697 2.606c.514.515 1.365.497 1.9-.038.535-.536.553-1.387.039-1.901l-2.609-2.636a5.055 5.055 0 0 0-2.445-1.337l2.467-2.503c.516-.514.498-1.366-.037-1.901-.535-.535-1.387-.552-1.902-.038l-10.1 10.101c-.981.982-1.469 2.326-1.469 3.765s.488 2.798 1.469 3.78l4.319 4.38c1.006.996 2.366 1.5 3.763 1.5s2.757-.504 3.763-1.5l2.697-2.607c.514-.515.496-1.366-.039-1.901-.535-.536-1.387-.553-1.902-.038zM20.811 13.01H10.666c-.702 0-1.27.604-1.27 1.346s.568 1.346 1.27 1.346h10.145c.701 0 1.27-.604 1.27-1.346s-.569-1.346-1.27-1.346z"/>
+            </svg>
+          </a>
+          <a href="https://monkeytype.com/profile/the25thjin" target="_blank" class="footer-icon-btn" title="Monkeytype">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+              <path d="M6 8h.001"></path>
+              <path d="M10 8h.001"></path>
+              <path d="M14 8h.001"></path>
+              <path d="M18 8h.001"></path>
+              <path d="M8 12h.001"></path>
+              <path d="M12 12h.001"></path>
+              <path d="M16 12h.001"></path>
+              <path d="M7 16h10"></path>
             </svg>
           </a>
         </div>
@@ -2497,8 +2548,242 @@
         });
       });
     });
+
+    // Chart.js Setup for Monkeytype Chart
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('typingChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const generateChartData = () => {
+        const dataCount = 80;
+        let currentSpeed = 50;
+        const targetSpeed = 96; // Climbing towards 30s PB
+        const step = (targetSpeed - currentSpeed) / dataCount;
+        
+        const speeds = [];
+        const smoothSpeeds = [];
+        const accuracies = [];
+        const labels = [];
+
+        for (let i = 0; i < dataCount; i++) {
+          labels.push(i);
+          currentSpeed += step + (Math.random() * 4 - 2);
+          if (currentSpeed < 40) currentSpeed = 40;
+          
+          speeds.push(currentSpeed + (Math.random() * 12 - 6));
+          
+          let smooth = currentSpeed;
+          if (i > 4) {
+            let sum = 0;
+            for(let j=0; j<5; j++) sum += speeds[i-j];
+            smooth = sum / 5;
+          } else {
+            smooth = speeds[i];
+          }
+          smoothSpeeds.push(smooth);
+
+          let acc = 94 + Math.random() * 6;
+          if (acc > 100) acc = 100;
+          accuracies.push(acc);
+        }
+        return { labels, speeds, smoothSpeeds, accuracies };
+      };
+
+      const chartData = generateChartData();
+
+      const getThemeColors = () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        return {
+          grid: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
+          text: isDark ? '#57534e' : '#a8a29e', // darker grey for text
+          speedLine: '#eab308', // monkeytype yellow
+          speedPoints: isDark ? 'rgba(234, 179, 8, 0.4)' : 'rgba(234, 179, 8, 0.5)',
+          accLine: isDark ? '#44403c' : '#d6d3d1'
+        };
+      };
+
+      let colors = getThemeColors();
+      
+      if (Chart.defaults) {
+        Chart.defaults.font.family = 'monospace';
+      }
+
+      const typingChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: 'Speed (Raw)',
+              data: chartData.speeds,
+              type: 'scatter',
+              backgroundColor: colors.speedPoints,
+              pointRadius: 2.5,
+              yAxisID: 'y',
+              order: 3
+            },
+            {
+              label: 'Speed (Average)',
+              data: chartData.smoothSpeeds,
+              borderColor: colors.speedLine,
+              borderWidth: 3,
+              tension: 0.4,
+              pointRadius: 0,
+              fill: false,
+              yAxisID: 'y',
+              order: 2
+            },
+            {
+              label: 'Accuracy',
+              data: chartData.accuracies,
+              borderColor: colors.accLine,
+              borderWidth: 2,
+              tension: 0,
+              stepped: 'before',
+              pointRadius: 0,
+              fill: false,
+              yAxisID: 'y1',
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(0,0,0,0.8)',
+              titleColor: '#fff',
+              bodyColor: '#eab308',
+              titleFont: { size: 13, weight: 'bold' },
+              bodyFont: { size: 14, weight: 'bold' },
+              padding: 12,
+              cornerRadius: 6,
+              callbacks: {
+                title: () => '',
+                label: function(context) {
+                  let val = Math.round(context.parsed.y);
+                  if (context.datasetIndex === 2) return `Accuracy: ${val}%`;
+                  if (context.datasetIndex === 1) return `Average: ${val} wpm`;
+                  return `Speed: ${val} wpm`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { 
+              display: true, 
+              grid: { display: false, drawBorder: false },
+              ticks: { display: false } 
+            },
+            y: {
+              type: 'linear',
+              display: true,
+              position: 'right',
+              grid: { color: colors.grid, drawBorder: false, tickLength: 0 },
+              ticks: { color: colors.text, stepSize: 20, padding: 10, font: { size: 11 } },
+              title: { display: false, text: 'Words per Minute', color: colors.text, font: { size: 11 } }
+            },
+            y1: {
+              type: 'linear',
+              display: true,
+              position: 'left',
+              min: 50,
+              max: 100,
+              grid: { display: false, drawBorder: false },
+              ticks: { color: colors.text, stepSize: 10, padding: 10, font: { size: 11 } },
+              title: { display: false, text: 'Accuracy (%)', color: colors.text, font: { size: 11 } }
+            }
+          }
+        }
+      });
+
+      const themeObserver = new MutationObserver(() => {
+        colors = getThemeColors();
+        typingChart.data.datasets[0].backgroundColor = colors.speedPoints;
+        typingChart.data.datasets[1].borderColor = colors.speedLine;
+        typingChart.data.datasets[2].borderColor = colors.accLine;
+        typingChart.options.scales.y.grid.color = colors.grid;
+        typingChart.options.scales.y.ticks.color = colors.text;
+        typingChart.options.scales.y1.ticks.color = colors.text;
+        typingChart.options.scales.y.title.color = colors.text;
+        typingChart.options.scales.y1.title.color = colors.text;
+        typingChart.update();
+      });
+      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+      /* ── LIGHTBOX LOGIC ── */
+      const projectMedia = {
+        'chokho': [
+          { type: 'img', src: 'https://res.cloudinary.com/mannr075/image/upload/v1779405996/Screenshot_2026-04-08_224722_dyustx.png' },
+          { type: 'img', src: 'https://res.cloudinary.com/mannr075/image/upload/v1779403681/Screenshot_2026-05-22_041653_qowruk.png' },
+          { type: 'img', src: 'https://res.cloudinary.com/mannr075/image/upload/v1779404162/Screenshot_2026-05-05_190544_rx1mcr.png' },
+          { type: 'img', src: 'https://res.cloudinary.com/mannr075/image/upload/v1779404162/Screenshot_2026-05-05_191422_apwpnx.png' }
+        ],
+        'drawmind': [
+          { type: 'video', src: 'https://res.cloudinary.com/mannr075/video/upload/v1779404299/demo_qjrurr.mp4' }
+        ],
+        'dagadaya': [
+          { type: 'video', src: 'https://res.cloudinary.com/mannr075/video/upload/v1779405224/demo_2_uwgykp.mp4' }
+        ]
+      };
+
+      let currentProject = '';
+      let currentSlideIndex = 0;
+      const lightbox = document.getElementById('lightbox');
+      const lightboxContent = document.getElementById('lightboxContent');
+
+      window.openLightbox = function(projectId) {
+        currentProject = projectId;
+        currentSlideIndex = 0;
+        lightbox.classList.add('active');
+        renderSlide();
+      };
+
+      window.closeLightbox = function() {
+        lightbox.classList.remove('active');
+        lightboxContent.innerHTML = '';
+      };
+
+      window.changeSlide = function(dir) {
+        if (!currentProject || !projectMedia[currentProject]) return;
+        const mediaArr = projectMedia[currentProject];
+        currentSlideIndex = (currentSlideIndex + dir + mediaArr.length) % mediaArr.length;
+        renderSlide();
+      };
+
+      function renderSlide() {
+        if (!currentProject || !projectMedia[currentProject]) return;
+        const media = projectMedia[currentProject][currentSlideIndex];
+        if (media.type === 'img') {
+          lightboxContent.innerHTML = `<img src="${media.src}" alt="Screenshot" />`;
+        } else if (media.type === 'video') {
+          lightboxContent.innerHTML = `<video controls autoplay playsinline style="max-width: 100%; max-height: 85vh; border-radius: 8px;"><source src="${media.src}" type="video/mp4"></video>`;
+        }
+      }
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+    });
   </script>
 
+  <!-- ── LIGHTBOX OVERLAY ── -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <button class="lightbox-nav lb-prev" onclick="changeSlide(-1)">‹</button>
+    <div class="lightbox-content" id="lightboxContent">
+      <!-- Media inserted here dynamically -->
+    </div>
+    <button class="lightbox-nav lb-next" onclick="changeSlide(1)">›</button>
+  </div>
 </body>
 
 </html>
