@@ -4,22 +4,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gallery | Mann's Portfolio</title>
-  <meta name="description" content="Explore Mann Rana's complete gallery of engineering projects, certifications, and achievements.">
-  <link rel="canonical" href="https://m4nn.vercel.app/gallery.html" />
+  <title>Blog | Mann's Portfolio</title>
+  <meta name="description" content="Read the latest software engineering articles and logs by Mann Rana.">
+  <link rel="canonical" href="https://m4nn.vercel.app/blog.html" />
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://m4nn.vercel.app/gallery.html">
-  <meta property="og:title" content="Project Gallery | Mann Rana">
-  <meta property="og:description" content="Explore Mann Rana's complete gallery of engineering projects, certifications, and achievements.">
+  <meta property="og:url" content="https://m4nn.vercel.app/blog.html">
+  <meta property="og:title" content="Blog">
+  <meta property="og:description" content="Read the latest software engineering articles and logs by Mann Rana.">
   <meta property="og:image" content="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://m4nn.vercel.app/gallery.html">
-  <meta property="twitter:title" content="Project Gallery | Mann Rana">
-  <meta property="twitter:description" content="Explore Mann Rana's complete gallery of engineering projects, certifications, and achievements.">
+  <meta property="twitter:title" content="Blog">
+  <meta property="twitter:description" content="Read the latest software engineering articles and logs by Mann Rana.">
   <meta property="twitter:image" content="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
 
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/mannr075/image/upload/f_auto,q_auto,w_1000/v1779400279/logo_f2njz5.png">
@@ -132,6 +132,8 @@
       background: var(--bg);
       max-width: 800px;
       margin: 0 auto;
+      margin-left: max(0px, calc((100vw - 800px) / 2));
+      margin-right: max(0px, calc((100vw - 800px) / 2));
       position: relative;
     }
 
@@ -1575,7 +1577,14 @@
       }
     }
   </style>
-</head>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+    <style>
+      .border-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+      .main-content { flex: 1; display: flex; flex-direction: column; }
+    </style>
+  </head>
 <body>
 
   <div class="border-wrapper">
@@ -1593,8 +1602,8 @@
         </a>
         <div class="nav-links">
           <a href="index.html">Home</a>
-          <a href="gallery.html" style="color: var(--text);">Gallery</a>
-          <a href="blog.html">Blog</a>
+          <a href="gallery.html">Gallery</a>
+          <a href="blog.html" style="color: var(--text);">Blog</a>
         </div>
         <div class="nav-right">
           <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
@@ -1629,88 +1638,48 @@
       </div>
     </nav>
 
-    <!-- Ã¢â€â‚¬Ã¢â€â‚¬ GALLERY HERO Ã¢â€â‚¬Ã¢â€â‚¬ -->
+    
+    <main class="main-content">
+      
+    <!-- ━━━ BLOG HERO ━━━ -->
     <section class="hero" style="padding-bottom: 24px; border-bottom: none;">
       <div class="hero-inner">
         <div class="hero-content" style="text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center;">
           <h1 class="reveal reveal-delay-1">
-            my <em>Gallery</em>.
+            my <em>Blog</em>.
           </h1>
-          <p class="hero-sub reveal reveal-delay-2" style="max-width: 600px; margin: 0 auto;">
-            A collection of moments, events, and snapshots. Scroll down to explore.
-          </p>
         </div>
       </div>
     </section>
-
-    <!-- Ã¢â€â‚¬Ã¢â€â‚¬ GALLERY GRID Ã¢â€â‚¬Ã¢â€â‚¬ -->
+      
     <style>
-      .masonry-gallery {
-        column-count: 3;
-        column-gap: 16px;
-        padding: 24px;
-        max-width: 800px;
-        margin: 0 auto;
-      }
-      @media(max-width: 640px) {
-        .masonry-gallery { column-count: 2; }
-      }
-      @media(max-width: 480px) {
-        .masonry-gallery { column-count: 2; gap: 12px; }
-      }
-      .gallery-item {
-        break-inside: avoid;
-        margin-bottom: 16px;
-        border-radius: 16px;
-        overflow: hidden;
-        border: none;
-        position: relative;
-        cursor: zoom-in;
-        background: linear-gradient(90deg, var(--surface2) 0%, var(--border-mid) 50%, var(--surface2) 100%);
-        background-size: 200% 100%;
-        animation: skeleton 1.5s infinite linear;
-      }
-      @keyframes skeleton {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-      }
-      .gallery-item img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: cover;
-        transition: transform 0.4s ease, opacity 0.5s ease;
-        opacity: 0;
-      }
-      .gallery-item img.loaded {
-        opacity: 1;
-      }
-      .gallery-item:hover img {
-        transform: scale(1.03);
-      }
-      .gallery-item::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0);
-        transition: background 0.3s ease;
-        pointer-events: none;
-      }
-      .gallery-item:hover::after {
-        background: rgba(0,0,0,0.1);
-      }
-      [data-theme="light"] .gallery-item:hover::after {
-        background: rgba(255,255,255,0.1);
+      .blog-list { padding: 40px 24px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+      .blog-row { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 24px 16px; border-bottom: 1px solid var(--border-mid); text-decoration: none; transition: all 0.2s ease; border-radius: 8px; align-items: start; }
+      .blog-image { width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background: var(--surface2); }
+      .blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+      .blog-row:hover { background: var(--surface2); border-bottom-color: transparent; }
+      .blog-row:hover .blog-image img { transform: scale(1.05); }
+      .blog-content { display: flex; flex-direction: column; gap: 6px; }
+      .blog-title { font-size: 1.25rem; font-weight: 500; color: var(--text); letter-spacing: -0.01em; }
+      .blog-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-dim); }
+      .blog-date { font-size: 0.75rem; color: var(--text-muted); font-family: 'Fira Code', monospace; margin-top: 4px; }
+      @media(max-width: 600px) {
+        .blog-row { grid-template-columns: 100px 1fr; gap: 16px; padding: 20px 12px; }
+        .blog-image { width: 100px; height: 70px; }
       }
     </style>
-    
-    <section id="gallery-content" style="border-top: 1px solid var(--border);">
-      <div class="masonry-gallery" id="dynamicGallery">
-        <!-- Dynamic images will be injected here by JavaScript -->
+<section id="blog-content" style="border-top: 1px solid var(--border);"><div class="blog-list">
+    <a href="posts/chokho_ai.html" class="blog-row reveal  visible">
+      <div class="blog-image">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60" alt="Blogs coming soon!!!" loading="lazy">
       </div>
-    </section>
-
-
+      <div class="blog-content">
+        <div class="blog-title">Blogs coming soon!!!</div>
+        <div class="blog-desc">Blogs coming soon!!!</div>
+        <div class="blog-date">2026-06-04</div>
+      </div>
+    </a></div></section>
+    </main>
     <!-- ━━━ FOOTER ━━━ -->
     <footer>
       <div class="footer-inner">
@@ -2019,56 +1988,7 @@
       if (lbTouchEndX > lbTouchStartX + 40) lbPrev.click();
     });
 
-    // Re-initialize lightbox and scroll reveal for dynamic items
-    function initDynamicGallery() {
-      const dynamicItems = document.querySelectorAll('#dynamicGallery .reveal');
-      dynamicItems.forEach(el => observer.observe(el));
-
-      const galleryItems = Array.from(document.querySelectorAll('#dynamicGallery img'));
-      galleryItems.forEach((media, index) => {
-        media.style.cursor = 'zoom-in';
-        media.addEventListener('click', () => {
-          openLightbox(galleryItems, index);
-        });
-      });
-    }
-
-    // Fetch Cloudinary tagged images
-    async function fetchGallery() {
-      const galleryContainer = document.getElementById('dynamicGallery');
-      if (!galleryContainer) return;
-
-      try {
-        const response = await fetch('https://res.cloudinary.com/mannr075/image/list/gallery.json');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
-        
-        let html = '';
-        data.resources.forEach((img, index) => {
-          // Cloudinary list API returns version and public_id
-          const url = `https://res.cloudinary.com/mannr075/image/upload/f_auto,q_auto,w_1000/v${img.version}/${img.public_id}.${img.format}`;
-          
-          // Randomize reveal delay for a staggered loading effect
-          const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
-          const delayClass = delays[index % 4];
-
-          html += `<div class="gallery-item reveal ${delayClass}">
-            <img src="${url}" alt="Gallery Photo" loading="lazy" onload="this.classList.add('loaded')" />
-          </div>`;
-        });
-        
-        galleryContainer.innerHTML = html;
-        initDynamicGallery();
-        
-      } catch (error) {
-        console.error('Error fetching gallery:', error);
-        galleryContainer.innerHTML = '<p style="text-align: center; color: var(--text-dim); padding: 40px;">Failed to load gallery. Make sure "Resource list" is unchecked in Cloudinary Security Settings.</p>';
-      }
-    }
-
-    // Call fetch on load
-    fetchGallery();
-  </script>
+    </script>
 
 </body>
 
