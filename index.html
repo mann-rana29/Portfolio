@@ -42,16 +42,16 @@
       --text-dim: #a8a29e;
       --text-muted: #57534e;
       --accent: #fafaf9;
-      --accent-green: #fbbf24;
-      --accent-blue: #fbbf24;
-      --accent-purple: #f59e0b;
-      --grid: rgba(245, 158, 11, 0.025);
+      --accent-green: #19a5ff;
+      --accent-blue: #19a5ff;
+      --accent-purple: #19a5ff;
+      --grid: rgba(25, 165, 255, 0.025);
       --font: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --radius: 8px;
     }
 
     [data-theme="light"] {
-      --bg: #fafaf9;
+      --bg: #fdfbf7;
       --surface: #ffffff;
       --surface2: #f5f5f4;
       --border: #e7e5e4;
@@ -60,9 +60,9 @@
       --text-dim: #78716c;
       --text-muted: #a8a29e;
       --accent: #1c1917;
-      --accent-green: #f59e0b;
-      --accent-blue: #f59e0b;
-      --accent-purple: #d97706;
+      --accent-green: #19a5ff;
+      --accent-blue: #19a5ff;
+      --accent-purple: #19a5ff;
       --grid: rgba(0, 0, 0, 0.03);
     }
 
@@ -323,15 +323,15 @@
     }
 
     .btn-sm.primary {
-      background: rgba(234, 179, 8, 0.15);
-      color: #eab308;
-      border: 1px solid rgba(234, 179, 8, 0.3);
+      background: rgba(25, 165, 255, 0.15);
+      color: #19a5ff;
+      border: 1px solid rgba(25, 165, 255, 0.3);
       font-weight: 600;
     }
 
     .btn-sm.primary:hover {
-      background: rgba(234, 179, 8, 0.25);
-      border-color: #eab308;
+      background: rgba(25, 165, 255, 0.25);
+      border-color: #19a5ff;
       opacity: 1;
     }
 
@@ -545,11 +545,11 @@
 
       0%,
       100% {
-        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+        box-shadow: 0 0 0 0 rgba(25, 165, 255, 0.4);
       }
 
       50% {
-        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+        box-shadow: 0 0 0 6px rgba(25, 165, 255, 0);
       }
     }
 
@@ -760,14 +760,14 @@
       content: '';
       position: absolute;
       inset: -20px;
-      background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(25, 165, 255, 0.08) 0%, transparent 70%);
       border-radius: 50%;
       z-index: 0;
       animation: glowPulse 4s ease-in-out infinite;
     }
 
     [data-theme="light"] .photo-stack::before {
-      background: radial-gradient(ellipse at center, rgba(217, 119, 6, 0.06) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(25, 165, 255, 0.06) 0%, transparent 70%);
     }
 
     @keyframes glowPulse {
@@ -2216,7 +2216,7 @@
           <canvas id="typingChart"></canvas>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 12px; padding: 0 10px;">
-          <div style="font-family: monospace; font-size: 0.85rem; color: var(--text-dim);">User: <a href="https://monkeytype.com/profile/the25thjin" target="_blank" style="color: #eab308; text-decoration: none;">@the25thjin</a> &nbsp;|&nbsp; 60s PB: <span style="color: var(--text);">82 wpm (95% acc)</span> &nbsp;|&nbsp; 10 words PB: <span style="color: var(--text);">118 wpm</span></div>
+          <div style="font-family: monospace; font-size: 0.85rem; color: var(--text-dim);">User: <a href="https://monkeytype.com/profile/the25thjin" target="_blank" style="color: #19a5ff; text-decoration: none;">@the25thjin</a> &nbsp;|&nbsp; 60s PB: <span style="color: var(--text);">82 wpm (95% acc)</span> &nbsp;|&nbsp; 10 words PB: <span style="color: var(--text);">118 wpm</span></div>
           
         </div>
       </div>
@@ -2242,8 +2242,8 @@
       </div> -->
 
       <div class="reveal" style="display: flex; justify-content: center; width: 100%; margin-bottom: 40px; overflow-x: auto; padding-bottom: 10px;">
-        <img class="gh-graph-dark" src="https://ghchart.rshah.org/eab308/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px; filter: invert(1) hue-rotate(180deg) brightness(1.2);" alt="GitHub Contributions Grid Dark" />
-        <img class="gh-graph-light" src="https://ghchart.rshah.org/eab308/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px;" alt="GitHub Contributions Grid Light" />
+        <img class="gh-graph-dark" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px; filter: invert(1) hue-rotate(180deg) brightness(1.2);" alt="GitHub Contributions Grid Dark" />
+        <img class="gh-graph-light" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px;" alt="GitHub Contributions Grid Light" />
       </div>
     </section>
 
@@ -2615,8 +2615,8 @@
         return {
           grid: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
           text: isDark ? '#57534e' : '#a8a29e', // darker grey for text
-          speedLine: '#eab308', // monkeytype yellow
-          speedPoints: isDark ? 'rgba(234, 179, 8, 0.4)' : 'rgba(234, 179, 8, 0.5)',
+          speedLine: '#19a5ff', // monkeytype blue
+          speedPoints: isDark ? 'rgba(25, 165, 255, 0.4)' : 'rgba(25, 165, 255, 0.5)',
           accLine: isDark ? '#44403c' : '#d6d3d1'
         };
       };
@@ -2678,7 +2678,7 @@
             tooltip: {
               backgroundColor: 'rgba(0,0,0,0.8)',
               titleColor: '#fff',
-              bodyColor: '#eab308',
+              bodyColor: '#19a5ff',
               titleFont: { size: 13, weight: 'bold' },
               bodyFont: { size: 14, weight: 'bold' },
               padding: 12,
