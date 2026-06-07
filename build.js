@@ -133,10 +133,10 @@ for (const post of posts) {
     ${postStyle}
     <article id="post-content" class="markdown-body reveal visible">
       <!-- ━━━ BACK NAV ━━━ -->
-      <div style="margin-bottom: 40px; text-align: left;">
-        <a href="../blog.html" class="btn-sm" style="display: inline-flex; margin-left: -12px;">← Back to Blog</a>
+      <div style="margin-bottom: 40px;">
+        <a href="../blog.html" class="btn-sm" style="display: inline-flex;">← Back to Blog</a>
       </div>
-      <h1 style="text-align: left;">${post.title}</h1>
+      <h1>${post.title}</h1>
       <div style="color: var(--accent-green); font-family: 'Fira Code', monospace; margin-top: -16px; margin-bottom: 40px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">${post.date}</div>
       ${post.html}
     </article>
