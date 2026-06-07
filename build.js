@@ -140,6 +140,72 @@ for (const post of posts) {
       <div style="color: var(--accent-green); font-family: 'Fira Code', monospace; margin-top: -16px; margin-bottom: 40px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">${post.date}</div>
       ${post.html}
     </article>
+
+    <!-- ── GUESTBOOK / INTERACTIONS ── -->
+    <section id="guestbook" style="padding: 56px 0; border-top: 1px solid var(--border); margin-top: 40px;" class="interactions-section" data-page-id="post-${post.slug}">
+      <div class="reveal" style="max-width: 720px; margin: 0 auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+          <h2 style="font-size: 1.5rem; font-weight: 500;">Leave a trace</h2>
+          
+          <style>
+            .minimal-like {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: transparent;
+              border: none;
+              color: var(--text-dim);
+              font-family: var(--font);
+              font-size: 1.05rem;
+              font-weight: 500;
+              cursor: pointer;
+              transition: color 0.2s ease;
+              outline: none;
+              padding: 4px;
+            }
+            .minimal-like svg {
+              transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.2s, stroke 0.2s;
+            }
+            .minimal-like:hover:not(:disabled) {
+              color: var(--text);
+            }
+            .minimal-like:hover:not(:disabled) svg {
+              transform: scale(1.15);
+            }
+            .minimal-like:active:not(:disabled) svg {
+              transform: scale(0.9);
+            }
+            .minimal-like.liked {
+              color: #19a5ff;
+              cursor: default;
+            }
+            .minimal-like.liked svg {
+              fill: #19a5ff;
+              stroke: #19a5ff;
+              animation: heartBeat 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+          </style>
+
+          <button id="like-btn-post-${post.slug}" class="minimal-like" title="Like Post">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span id="like-count-post-${post.slug}">0</span>
+          </button>
+        </div>
+
+        <form id="comment-form-post-${post.slug}" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;">
+          <input type="text" class="comment-name-input" placeholder="Your Name (Optional)" style="padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text); font-family: var(--font); font-size: 0.9rem;">
+          <textarea class="comment-text-input" placeholder="Say hello..." required rows="3" style="padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text); font-family: var(--font); font-size: 0.9rem; resize: vertical;"></textarea>
+          <button type="submit" class="btn-fill" style="align-self: flex-end; padding: 10px 20px; border-radius: var(--radius); border: none; font-weight: 600; cursor: pointer;">Post Comment</button>
+        </form>
+
+        <div style="margin-bottom: 16px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;" id="comments-count-post-${post.slug}">0 Comments</div>
+        <div id="comments-list-post-${post.slug}" style="display: flex; flex-direction: column; gap: 16px;">
+          <!-- Comments go here -->
+        </div>
+      </div>
+    </section>
   `;
   
   // Fix paths since posts are in /posts/ directory
@@ -148,6 +214,7 @@ for (const post of posts) {
   pageHtml = pageHtml.replace(/href="gallery\.html"/g, 'href="../gallery.html"');
   pageHtml = pageHtml.replace(/href="blog\.html"/g, 'href="../blog.html"');
   pageHtml = pageHtml.replace(/src="https/g, 'src="https'); // absolute URLs are fine
+  pageHtml = pageHtml.replace('</body>', '<script src="../assets/js/interactions.js"></script>\n</body>');
   
   fs.writeFileSync(path.join(__dirname, 'posts', `${post.slug}.html`), pageHtml);
   sitemapUrls.push(`https://m4nn.vercel.app/posts/${post.slug}.html`);

@@ -2247,6 +2247,55 @@
       </div>
     </section>
 
+    <!-- ── LIKES / INTERACTIONS ── -->
+    <div class="interactions-section" data-page-id="portfolio-home" style="display: flex; justify-content: flex-end; padding: 20px 24px 10px;">
+      <style>
+        .minimal-like {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: transparent;
+          border: none;
+          color: var(--text-dim);
+          font-family: var(--font);
+          font-size: 1.05rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: color 0.2s ease;
+          outline: none;
+          padding: 4px 8px;
+        }
+        .minimal-like svg {
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.2s, stroke 0.2s;
+        }
+        .minimal-like:hover:not(:disabled) {
+          color: var(--text);
+        }
+        .minimal-like:hover:not(:disabled) svg {
+          transform: scale(1.15);
+        }
+        .minimal-like:active:not(:disabled) svg {
+          transform: scale(0.9);
+        }
+        .minimal-like.liked {
+          color: #19a5ff;
+          cursor: default;
+        }
+        .minimal-like.liked svg {
+          fill: #19a5ff;
+          stroke: #19a5ff;
+          animation: heartBeat 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      </style>
+
+      <button id="like-btn-portfolio-home" class="minimal-like" title="Like Portfolio">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        <span id="like-count-portfolio-home">0</span>
+      </button>
+    </div>
+
     <!-- ── FOOTER ── -->
     <footer>
       <div class="footer-inner">
@@ -2799,6 +2848,8 @@
     </div>
     <button class="lightbox-nav lb-next" onclick="changeSlide(1)">›</button>
   </div>
+  
+  <script src="assets/js/interactions.js"></script>
 </body>
 
 </html>
