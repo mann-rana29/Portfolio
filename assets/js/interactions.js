@@ -126,8 +126,31 @@ function renderComments(pageId, comments) {
 
   if (countEl) countEl.textContent = `${comments.length} Comments`;
 
+  if (!document.getElementById('comment-card-styles')) {
+    document.head.insertAdjacentHTML('beforeend', `
+      <style id="comment-card-styles">
+        .comment-card {
+          padding: 16px;
+          border-radius: 0;
+          border: 1px solid transparent;
+          background: transparent;
+          text-align: left;
+          transition: all 0.2s ease;
+          border-bottom: 1px solid var(--border-mid);
+        }
+        .comment-card:hover {
+          border-color: var(--border-mid);
+          background: var(--bg);
+        }
+        .comment-name-input:focus, .comment-text-input:focus {
+          border-color: var(--text-dim) !important;
+        }
+      </style>
+    `);
+  }
+
   if (comments.length === 0) {
-    container.innerHTML = '<div style="color: var(--text-dim); font-size: 0.95rem;">No comments yet. Be the first!</div>';
+    container.innerHTML = '<div style="color: var(--text-dim); font-size: 0.95rem; padding: 16px;">No comments yet. Be the first!</div>';
     return;
   }
 
@@ -138,9 +161,9 @@ function renderComments(pageId, comments) {
     const safeName = escapeHTML(comment.name || 'Anonymous');
 
     return `
-      <div style="padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-mid); text-align: left;">
+      <div class="comment-card">
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-          <strong style="font-weight: 500; color: var(--text); font-size: 0.95rem;">${safeName}</strong>
+          <strong style="font-weight: 600; color: var(--text); font-size: 1.1rem;">${safeName}</strong>
           <span style="color: var(--text-muted); font-size: 0.75rem; font-family: 'Fira Code', monospace;">${date}</span>
         </div>
         <div style="color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; word-break: break-word;">

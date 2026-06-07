@@ -100,7 +100,8 @@ posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 // 2. Generate individual post pages
 const postStyle = `
     <style>
-      .markdown-body { padding: 56px 24px; max-width: 720px; margin: 0 auto; color: var(--text); line-height: 1.8; font-size: 1.05rem; }
+      .markdown-body { padding: 56px 24px; max-width: 720px; margin: 0 auto; color: var(--text); line-height: 1.8; font-size: 1.05rem; overflow-wrap: break-word; word-wrap: break-word; overflow-x: hidden; width: 100%; }
+      .markdown-body img { max-width: 100%; height: auto; border-radius: 8px; }
       .markdown-body h1 { font-size: 2.5rem; margin-bottom: 32px; letter-spacing: -0.03em; font-weight: 600; line-height: 1.2; }
       .markdown-body h2 { font-size: 1.75rem; margin-top: 48px; margin-bottom: 16px; font-weight: 500; letter-spacing: -0.02em; }
       .markdown-body h3 { font-size: 1.35rem; margin-top: 32px; margin-bottom: 12px; font-weight: 500; }
@@ -143,9 +144,9 @@ for (const post of posts) {
 
     <!-- ── GUESTBOOK / INTERACTIONS ── -->
     <section id="guestbook" style="padding: 56px 0; border-top: 1px solid var(--border); margin-top: 40px;" class="interactions-section" data-page-id="post-${post.slug}">
-      <div class="reveal" style="max-width: 720px; margin: 0 auto;">
+      <div class="reveal" style="max-width: 720px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; width: 100%;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
-          <h2 style="font-size: 1.5rem; font-weight: 500;">Leave a trace</h2>
+          <h2 style="font-size: 1.5rem; font-weight: 500;">Comments</h2>
           
           <style>
             .minimal-like {
@@ -194,15 +195,18 @@ for (const post of posts) {
           </button>
         </div>
 
-        <form id="comment-form-post-${post.slug}" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;">
-          <input type="text" class="comment-name-input" placeholder="Your Name (Optional)" style="padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text); font-family: var(--font); font-size: 0.9rem;">
-          <textarea class="comment-text-input" placeholder="Say hello..." required rows="3" style="padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-mid); background: var(--surface); color: var(--text); font-family: var(--font); font-size: 0.9rem; resize: vertical;"></textarea>
-          <button type="submit" class="btn-fill" style="align-self: flex-end; padding: 10px 20px; border-radius: var(--radius); border: none; font-weight: 600; cursor: pointer;">Post Comment</button>
-        </form>
+        <div class="comments-wrapper" style="border: 1px solid var(--border-mid); padding: clamp(16px, 4vw, 24px); width: 100%; max-width: 100%; box-sizing: border-box; background: transparent; margin-top: 24px; border-radius: 0;">
+          
+          <form id="comment-form-post-${post.slug}" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; width: 100%; box-sizing: border-box;">
+            <input type="text" class="comment-name-input" placeholder="Your Name (Optional)" style="padding: 12px 16px; border-radius: 0; border: 1px solid var(--border-mid); background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; box-sizing: border-box; width: 100%; outline: none; transition: border-color 0.2s;">
+            <textarea class="comment-text-input" placeholder="Say hello..." required rows="3" style="padding: 12px 16px; border-radius: 0; border: 1px solid var(--border-mid); background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; resize: vertical; box-sizing: border-box; width: 100%; outline: none; transition: border-color 0.2s;"></textarea>
+            <button type="submit" class="btn-fill" style="align-self: flex-end; padding: 10px 20px; border-radius: 0; border: none; font-weight: 600; cursor: pointer; font-size: 0.95rem;">Post Comment</button>
+          </form>
 
-        <div style="margin-bottom: 16px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;" id="comments-count-post-${post.slug}">0 Comments</div>
-        <div id="comments-list-post-${post.slug}" style="display: flex; flex-direction: column; gap: 16px;">
-          <!-- Comments go here -->
+          <div style="margin-bottom: 16px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;" id="comments-count-post-${post.slug}">0 Comments</div>
+          <div id="comments-list-post-${post.slug}" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Comments go here -->
+          </div>
         </div>
       </div>
     </section>
