@@ -1,9 +1,3 @@
-# Ignore image files to keep them private
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.ico
 
 # Dependencies
 node_modules/
