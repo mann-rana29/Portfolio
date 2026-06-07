@@ -28,8 +28,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    // Basic IP-based rate limiting or just incrementing
-    // In a real scenario we'd use IP to prevent spam, but for now we just increment
+    const action = req.query.action || 'like'; // default to like
 
     // 1. Check if row exists
     const { data: existingData } = await supabase
@@ -39,10 +38,17 @@ export default async function handler(req, res) {
       .single();
 
     if (existingData) {
-      // Increment
+      // Increment or decrement
+      let newCount = existingData.count;
+      if (action === 'like') {
+        newCount += 1;
+      } else if (action === 'unlike') {
+        newCount = Math.max(0, newCount - 1);
+      }
+
       const { data, error } = await supabase
         .from('likes')
-        .update({ count: existingData.count + 1 })
+        .update({ count: newCount })
         .eq('page_id', page_id)
         .select()
         .single();
@@ -50,10 +56,11 @@ export default async function handler(req, res) {
       if (error) return res.status(500).json({ error: error.message });
       return res.status(200).json({ count: data.count });
     } else {
-      // Create new row
+      // Create new row (if unliking a non-existent row, it's just 0)
+      const initialCount = action === 'like' ? 1 : 0;
       const { data, error } = await supabase
         .from('likes')
-        .insert([{ page_id: page_id, count: 1 }])
+        .insert([{ page_id: page_id, count: initialCount }])
         .select()
         .single();
         

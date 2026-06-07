@@ -20,22 +20,46 @@ async function fetchLikes(pageId) {
 }
 
 /**
- * Increment the like count for a given page_id
+ * Toggle the like status for a given page_id (Optimistic UI)
  */
-async function incrementLike(pageId) {
-  try {
-    const res = await fetch(`${API_BASE}/likes?page_id=${pageId}`, {
-      method: 'POST',
-    });
-    if (res.ok) {
-      const data = await res.json();
-      updateLikeUI(pageId, data.count);
-      // Optional: Store in localStorage to prevent multiple clicks
+async function toggleLike(pageId) {
+  const isLiked = localStorage.getItem(`liked_${pageId}`);
+  const countEl = document.getElementById(`like-count-${pageId}`);
+  const btn = document.getElementById(`like-btn-${pageId}`);
+  let currentCount = parseInt(countEl.textContent) || 0;
+
+  if (isLiked) {
+    // Optimistic Unlike
+    countEl.textContent = Math.max(0, currentCount - 1);
+    btn.classList.remove('liked');
+    localStorage.removeItem(`liked_${pageId}`);
+    
+    // Server fetch
+    try {
+      await fetch(`${API_BASE}/likes?page_id=${pageId}&action=unlike`, { method: 'POST' });
+    } catch (e) {
+      console.error('Error unliking:', e);
+      // Revert if error
+      countEl.textContent = currentCount;
+      btn.classList.add('liked');
       localStorage.setItem(`liked_${pageId}`, 'true');
-      disableLikeButton(pageId);
     }
-  } catch (err) {
-    console.error('Error incrementing like:', err);
+  } else {
+    // Optimistic Like
+    countEl.textContent = currentCount + 1;
+    btn.classList.add('liked');
+    localStorage.setItem(`liked_${pageId}`, 'true');
+    
+    // Server fetch
+    try {
+      await fetch(`${API_BASE}/likes?page_id=${pageId}&action=like`, { method: 'POST' });
+    } catch (e) {
+      console.error('Error liking:', e);
+      // Revert if error
+      countEl.textContent = currentCount;
+      btn.classList.remove('liked');
+      localStorage.removeItem(`liked_${pageId}`);
+    }
   }
 }
 
@@ -86,14 +110,12 @@ function updateLikeUI(pageId, count) {
   }
 }
 
-function disableLikeButton(pageId) {
+function initLikeButton(pageId) {
   const btn = document.getElementById(`like-btn-${pageId}`);
   if (btn) {
-    btn.classList.add('liked');
-    btn.disabled = true;
-    // Change icon to filled
-    const svg = btn.querySelector('svg');
-    if (svg) svg.setAttribute('fill', 'currentColor');
+    if (localStorage.getItem(`liked_${pageId}`)) {
+      btn.classList.add('liked');
+    }
   }
 }
 
@@ -105,19 +127,31 @@ function renderComments(pageId, comments) {
   if (countEl) countEl.textContent = `${comments.length} Comments`;
 
   if (comments.length === 0) {
-    container.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
+    container.innerHTML = '<div style="color: var(--text-dim); font-size: 0.95rem;">No comments yet. Be the first!</div>';
     return;
   }
 
   container.innerHTML = comments.map(comment => {
-    const date = new Date(comment.created_at).toLocaleDateString();
+    const date = new Date(comment.created_at).toLocaleDateString(undefined, {
+      year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+    const safeName = escapeHTML(comment.name || 'Anonymous');
+    const initial = safeName.charAt(0).toUpperCase();
+
     return `
-      <div class="comment-item">
-        <div class="comment-header">
-          <span class="comment-name">${escapeHTML(comment.name || 'Anonymous')}</span>
-          <span class="comment-date">${date}</span>
+      <div style="background: var(--surface2); padding: 16px; border-radius: 12px; border: 1px solid var(--border-mid); text-align: left; transition: transform 0.2s ease;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #19a5ff; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; font-family: var(--font);">
+              ${initial}
+            </div>
+            <span style="font-size: 0.95rem;">${safeName}</span>
+          </div>
+          <span style="color: var(--text-muted); font-size: 0.75rem; font-family: 'Fira Code', monospace;">${date}</span>
         </div>
-        <div class="comment-body">${escapeHTML(comment.content)}</div>
+        <div style="color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; margin-top: 8px; padding-left: 38px; word-break: break-word;">
+          ${escapeHTML(comment.content)}
+        </div>
       </div>
     `;
   }).join('');
@@ -151,11 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup Like Button
     const likeBtn = document.getElementById(`like-btn-${pageId}`);
     if (likeBtn) {
-      if (localStorage.getItem(`liked_${pageId}`)) {
-        disableLikeButton(pageId);
-      } else {
-        likeBtn.addEventListener('click', () => incrementLike(pageId));
-      }
+      initLikeButton(pageId);
+      likeBtn.addEventListener('click', () => toggleLike(pageId));
     }
 
     // Setup Comment Form
@@ -173,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!content.trim()) return;
 
         btn.disabled = true;
-        btn.textContent = 'Submitting...';
+        btn.textContent = 'Posting...';
 
         const success = await submitComment(pageId, name, content);
         
@@ -185,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         btn.disabled = false;
-        btn.textContent = 'Submit';
+        btn.textContent = 'Post Comment';
       });
     }
   });
