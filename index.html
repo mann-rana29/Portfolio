@@ -15,16 +15,16 @@
   <meta property="og:url" content="https://m4nn.vercel.app/">
   <meta property="og:title" content="Mann's Portfolio">
   <meta property="og:description" content="Mann Rana's personal developer portfolio showcasing software engineering projects, skills, and articles.">
-  <meta property="og:image" content="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
+  <meta property="og:image" content="assets/images/profile_logo.png">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://m4nn.vercel.app/">
   <meta property="twitter:title" content="Mann's Portfolio">
   <meta property="twitter:description" content="Mann Rana's personal developer portfolio showcasing software engineering projects, skills, and articles.">
-  <meta property="twitter:image" content="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
+  <meta property="twitter:image" content="assets/images/profile_logo.png">
 
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png">
+  <link rel="icon" type="image/png" href="assets/images/profile_logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1682,7 +1682,7 @@
     <nav>
       <div class="nav-inner">
         <a href="#" class="nav-logo">
-          <img src="https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png" alt="Logo"
+          <img src="assets/images/profile_logo.png" alt="Logo"
             class="nav-avatar" />
           Mann Rana
         </a>
@@ -1988,7 +1988,7 @@
       <div class="projects-grid">
 
         <div class="project-card reveal">
-          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('chokho')">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openProjectLightbox('chokho')">
             <div class="mockup-browser">
               <div class="mockup-browser-header">
                 <div class="mockup-browser-dot red"></div>
@@ -2032,7 +2032,7 @@
         </div>
 
         <div class="project-card reveal reveal-delay-1">
-          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('drawmind')">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openProjectLightbox('drawmind')">
             <div class="mockup-browser">
               <div class="mockup-browser-header">
                 <div class="mockup-browser-dot red"></div>
@@ -2081,7 +2081,7 @@
 
         <!--
         <div class="project-card reveal reveal-delay-2">
-          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openLightbox('dagadaya')">
+          <div class="project-showcase" style="background-image: url('assets/project_bg.png');" onclick="openProjectLightbox('dagadaya')">
             <div class="mockup-phone">
               <div class="mockup-phone-notch"></div>
               <video autoplay loop muted playsinline>
@@ -2203,27 +2203,53 @@
 
     
 
-        <!-- ── TYPING STATS ── -->
-    <section id="stats" style="padding: 56px 20px 0;">
-      <div class="section-label reveal">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-        </svg>
-        MonkeyType Stats
-      </div>
-      <div class="stats-container reveal" style="position: relative; width: 100%; margin-bottom: 40px; background: transparent; padding: 10px 0;">
-        <div style="height: 350px; width: 100%;">
-          <canvas id="typingChart"></canvas>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 12px; padding: 0 10px;">
-          <div style="font-family: monospace; font-size: 0.85rem; color: var(--text-dim);">User: <a href="https://monkeytype.com/profile/the25thjin" target="_blank" style="color: #19a5ff; text-decoration: none;">@the25thjin</a> &nbsp;|&nbsp; 60s PB: <span style="color: var(--text);">82 wpm (95% acc)</span> &nbsp;|&nbsp; 10 words PB: <span style="color: var(--text);">118 wpm</span></div>
-          
-        </div>
-      </div>
-    </section>
+        <!-- ── TYPING STATS (REMOVED) ── -->
 
-    <!-- Github Contributions -->
+  <!-- ── BLOG PREVIEW ── -->
+  <section id="blog-preview" style="padding: 35px 20px; max-width: 1240px; margin: 0 auto;">
+    <style>
+      .explore-blog-list { display: flex; flex-direction: column; gap: 0; margin-top: 24px; border: 1px solid var(--border-mid); border-radius: 4px; padding: 0 16px; }
+      .explore-blog-item { display: flex; gap: 20px; align-items: center; text-decoration: none; padding: 16px 0; border-radius: 0; transition: opacity 0.2s; border-bottom: 1px solid var(--border-mid); }
+      .explore-blog-item:last-child { border-bottom: none; }
+      .explore-blog-item:hover { opacity: 0.8; }
+      .explore-blog-item img { width: 100px; height: 75px; object-fit: cover; border-radius: 6px; background: var(--surface2); flex-shrink: 0; border: 1px solid var(--border); }
+      .explore-blog-info h4 { font-size: 1.1rem; color: var(--text); font-weight: 500; margin-bottom: 6px; line-height: 1.3; }
+      .explore-blog-info span { font-size: 0.8rem; color: var(--text-muted); font-family: 'Fira Code', monospace; }
+      .explore-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: transparent; color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500; border-radius: 6px; margin-top: 16px; transition: color 0.2s; border: 1px solid var(--border); }
+      .explore-btn:hover { color: var(--accent-blue); border-color: var(--border-mid); }
+    </style>
+
+    <div class="section-label reveal">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+      </svg>
+      Recent Writings
+    </div>
+    
+    <div class="explore-blog-list reveal">
+      <a href="posts/portfolio_architecture.html" class="explore-blog-item">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80" alt="Building a Blazing Fast, Serverless Portfolio">
+        <div class="explore-blog-info">
+          <h4>Building a Blazing Fast, Serverless Portfolio</h4>
+          <span>2026-06-07</span>
+        </div>
+      </a>
+      <!-- <a href="posts/chokho_ai.html" class="explore-blog-item">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&auto=format&fit=crop&q=60" alt="Blogs coming soon!!!">
+        <div class="explore-blog-info">
+          <h4>Blogs coming soon!!!</h4>
+          <span>2026-06-04</span>
+        </div>
+      </a> -->
+    </div>
+    <a href="blog.html" class="explore-btn reveal">
+      Read More Blogs
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+
+<!-- Github Contributions -->
 
     <section id="github-graph" style="padding: 56px 20px 0;">
       <style>
@@ -2590,12 +2616,12 @@
       currentMediaList = mediaList;
       currentIndex = index;
       updateLightbox();
-      lightbox.classList.add('active');
+      projectLightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
-      lightbox.classList.remove('active');
+      projectLightbox.classList.remove('active');
       document.body.style.overflow = '';
       lbContent.innerHTML = ''; // stops video
     }
@@ -2616,7 +2642,7 @@
       updateLightbox();
     });
 
-    lightbox.addEventListener('click', (e) => {
+    projectLightbox.addEventListener('click', (e) => {
       if (e.target === lightbox || e.target === lbContent) closeLightbox();
     });
 
@@ -2652,174 +2678,7 @@
       });
     });
 
-    // Chart.js Setup for Monkeytype Chart
-    document.addEventListener('DOMContentLoaded', () => {
-      const canvas = document.getElementById('typingChart');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
 
-      const generateChartData = () => {
-        const dataCount = 80;
-        let currentSpeed = 50;
-        const targetSpeed = 96; // Climbing towards 30s PB
-        const step = (targetSpeed - currentSpeed) / dataCount;
-        
-        const speeds = [];
-        const smoothSpeeds = [];
-        const accuracies = [];
-        const labels = [];
-
-        for (let i = 0; i < dataCount; i++) {
-          labels.push(i);
-          currentSpeed += step + (Math.random() * 4 - 2);
-          if (currentSpeed < 40) currentSpeed = 40;
-          
-          speeds.push(currentSpeed + (Math.random() * 12 - 6));
-          
-          let smooth = currentSpeed;
-          if (i > 4) {
-            let sum = 0;
-            for(let j=0; j<5; j++) sum += speeds[i-j];
-            smooth = sum / 5;
-          } else {
-            smooth = speeds[i];
-          }
-          smoothSpeeds.push(smooth);
-
-          let acc = 94 + Math.random() * 6;
-          if (acc > 100) acc = 100;
-          accuracies.push(acc);
-        }
-        return { labels, speeds, smoothSpeeds, accuracies };
-      };
-
-      const chartData = generateChartData();
-
-      const getThemeColors = () => {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        return {
-          grid: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
-          text: isDark ? '#57534e' : '#a8a29e', // darker grey for text
-          speedLine: '#19a5ff', // monkeytype blue
-          speedPoints: isDark ? 'rgba(25, 165, 255, 0.4)' : 'rgba(25, 165, 255, 0.5)',
-          accLine: isDark ? '#44403c' : '#d6d3d1'
-        };
-      };
-
-      let colors = getThemeColors();
-      
-      if (Chart.defaults) {
-        Chart.defaults.font.family = 'monospace';
-      }
-
-      const typingChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: chartData.labels,
-          datasets: [
-            {
-              label: 'Speed (Raw)',
-              data: chartData.speeds,
-              type: 'scatter',
-              backgroundColor: colors.speedPoints,
-              pointRadius: 2.5,
-              yAxisID: 'y',
-              order: 3
-            },
-            {
-              label: 'Speed (Average)',
-              data: chartData.smoothSpeeds,
-              borderColor: colors.speedLine,
-              borderWidth: 3,
-              tension: 0.4,
-              pointRadius: 0,
-              fill: false,
-              yAxisID: 'y',
-              order: 2
-            },
-            {
-              label: 'Accuracy',
-              data: chartData.accuracies,
-              borderColor: colors.accLine,
-              borderWidth: 2,
-              tension: 0,
-              stepped: 'before',
-              pointRadius: 0,
-              fill: false,
-              yAxisID: 'y1',
-              order: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: {
-            mode: 'index',
-            intersect: false,
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: 'rgba(0,0,0,0.8)',
-              titleColor: '#fff',
-              bodyColor: '#19a5ff',
-              titleFont: { size: 13, weight: 'bold' },
-              bodyFont: { size: 14, weight: 'bold' },
-              padding: 12,
-              cornerRadius: 6,
-              callbacks: {
-                title: () => '',
-                label: function(context) {
-                  let val = Math.round(context.parsed.y);
-                  if (context.datasetIndex === 2) return `Accuracy: ${val}%`;
-                  if (context.datasetIndex === 1) return `Average: ${val} wpm`;
-                  return `Speed: ${val} wpm`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: { 
-              display: true, 
-              grid: { display: false, drawBorder: false },
-              ticks: { display: false } 
-            },
-            y: {
-              type: 'linear',
-              display: true,
-              position: 'right',
-              grid: { color: colors.grid, drawBorder: false, tickLength: 0 },
-              ticks: { color: colors.text, stepSize: 20, padding: 10, font: { size: 11 } },
-              title: { display: false, text: 'Words per Minute', color: colors.text, font: { size: 11 } }
-            },
-            y1: {
-              type: 'linear',
-              display: true,
-              position: 'left',
-              min: 50,
-              max: 100,
-              grid: { display: false, drawBorder: false },
-              ticks: { color: colors.text, stepSize: 10, padding: 10, font: { size: 11 } },
-              title: { display: false, text: 'Accuracy (%)', color: colors.text, font: { size: 11 } }
-            }
-          }
-        }
-      });
-
-      const themeObserver = new MutationObserver(() => {
-        colors = getThemeColors();
-        typingChart.data.datasets[0].backgroundColor = colors.speedPoints;
-        typingChart.data.datasets[1].borderColor = colors.speedLine;
-        typingChart.data.datasets[2].borderColor = colors.accLine;
-        typingChart.options.scales.y.grid.color = colors.grid;
-        typingChart.options.scales.y.ticks.color = colors.text;
-        typingChart.options.scales.y1.ticks.color = colors.text;
-        typingChart.options.scales.y.title.color = colors.text;
-        typingChart.options.scales.y1.title.color = colors.text;
-        typingChart.update();
-      });
-      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
       /* ── LIGHTBOX LOGIC ── */
       const projectMedia = {
@@ -2836,10 +2695,10 @@
 
       let currentProject = '';
       let currentSlideIndex = 0;
-      const lightbox = document.getElementById('lightbox');
+      const projectLightbox = document.getElementById('lightbox');
       const lightboxContent = document.getElementById('lightboxContent');
 
-      window.openLightbox = function(projectId) {
+      window.openProjectLightbox = function(projectId) {
         currentProject = projectId;
         currentSlideIndex = 0;
         lightbox.classList.add('active');
@@ -2869,10 +2728,10 @@
       }
 
       lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
+        if (e.target === projectLightbox) closeLightbox();
       });
 
-    });
+    
   </script>
 
   <!-- ── LIGHTBOX OVERLAY ── -->

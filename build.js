@@ -12,7 +12,7 @@ const galleryHtml = fs.readFileSync(galleryHtmlPath, 'utf8');
 // Function to generate a page by replacing the hero and gallery sections
 function generatePage(contentHtml, title, description, urlPath, image, showHero = true) {
   const fullUrl = `https://m4nn.vercel.app${urlPath}`;
-  const imgUrl = image || 'https://res.cloudinary.com/mannr075/image/upload/v1779400279/logo_f2njz5.png';
+  const imgUrl = image || '/assets/images/profile_logo.png';
   const displayTitle = title === 'Blog' ? 'my <em>Blog</em>.' : title;
 
   // We want to replace from <!-- ━━━ GALLERY HERO ━━━ --> down to right before <!-- ━━━ FOOTER ━━━ -->
@@ -40,6 +40,14 @@ function generatePage(contentHtml, title, description, urlPath, image, showHero 
   topPart = topPart.replace('</head>', `
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   </head>`);
+
+  // Fix relative paths for assets inside the posts folder
+  topPart = topPart.replace(/href="assets\//g, 'href="../assets/');
+  topPart = topPart.replace(/src="assets\//g, 'src="../assets/');
+  topPart = topPart.replace(/content="assets\//g, 'content="../assets/');
+  
+  bottomPart = bottomPart.replace(/href="assets\//g, 'href="../assets/');
+  bottomPart = bottomPart.replace(/src="assets\//g, 'src="../assets/');
 
   // Also remove gallery-specific JS from the bottom
   bottomPart = bottomPart.replace(/\/\* ━━━ LIGHTBOX LOGIC ━━━ \*\/[\s\S]*?(?=<\/script>)/, '');
