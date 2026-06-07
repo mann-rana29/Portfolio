@@ -186,8 +186,7 @@ function escapeHTML(str) {
   );
 }
 
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', () => {
+function initInteractions() {
   // Find all elements that declare a page-id for interactions
   const interactionSections = document.querySelectorAll('.interactions-section');
   
@@ -237,4 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
-});
+}
+
+// Initialize immediately if DOM is ready, otherwise wait for DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initInteractions);
+} else {
+  initInteractions();
+}
