@@ -136,20 +136,14 @@ function renderComments(pageId, comments) {
       year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
     const safeName = escapeHTML(comment.name || 'Anonymous');
-    const initial = safeName.charAt(0).toUpperCase();
 
     return `
-      <div style="background: var(--surface2); padding: 16px; border-radius: 12px; border: 1px solid var(--border-mid); text-align: left; transition: transform 0.2s ease;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div style="font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 10px;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: #19a5ff; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; font-family: var(--font);">
-              ${initial}
-            </div>
-            <span style="font-size: 0.95rem;">${safeName}</span>
-          </div>
+      <div style="padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-mid); text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+          <strong style="font-weight: 500; color: var(--text); font-size: 0.95rem;">${safeName}</strong>
           <span style="color: var(--text-muted); font-size: 0.75rem; font-family: 'Fira Code', monospace;">${date}</span>
         </div>
-        <div style="color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; margin-top: 8px; padding-left: 38px; word-break: break-word;">
+        <div style="color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; word-break: break-word;">
           ${escapeHTML(comment.content)}
         </div>
       </div>
