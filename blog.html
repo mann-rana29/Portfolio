@@ -1579,9 +1579,34 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <style>
       .border-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
       .main-content { flex: 1; display: flex; flex-direction: column; }
+      
+      /* Mermaid loading skeleton */
+      .mermaid:not([data-processed="true"]) {
+        min-height: 250px;
+        background: linear-gradient(90deg, var(--surface2) 0%, var(--border-mid) 50%, var(--surface2) 100%);
+        background-size: 200% 100%;
+        animation: skeleton 1.5s infinite linear;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1.5rem 0;
+      }
+      @keyframes skeleton {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .mermaid:not([data-processed="true"])::before {
+        content: 'Loading Diagram...';
+        color: var(--text-muted);
+        font-family: var(--font);
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+      }
     </style>
   </head>
 <body>
