@@ -12,7 +12,11 @@ const galleryHtml = fs.readFileSync(galleryHtmlPath, 'utf8');
 // Function to generate a page by replacing the hero and gallery sections
 function generatePage(contentHtml, title, description, urlPath, image, showHero = true) {
   const fullUrl = `https://m4nn.vercel.app${urlPath}`;
-  const imgUrl = image || '/assets/images/profile_logo.png';
+  let rawImgUrl = image || '/assets/images/profile_logo.png';
+  if (!rawImgUrl.startsWith('/') && !rawImgUrl.startsWith('http')) {
+    rawImgUrl = '/' + rawImgUrl;
+  }
+  const imgUrl = rawImgUrl.startsWith('http') ? rawImgUrl : `https://m4nn.vercel.app${rawImgUrl}`;
   const displayTitle = title === 'Blog' ? 'my <em>Blog</em>.' : title;
 
   // We want to replace from <!-- ━━━ GALLERY HERO ━━━ --> down to right before <!-- ━━━ FOOTER ━━━ -->
@@ -74,9 +78,16 @@ function generatePage(contentHtml, title, description, urlPath, image, showHero 
       </div>
     </section>` : '';
 
+  const coverImage = image ? `
+    <div class="reveal reveal-delay-2" style="width: 100%; max-width: 1000px; height: 320px; margin: 0 auto 16px auto; border-radius: 12px; overflow: hidden; padding: 0 24px; box-sizing: border-box;">
+      <img src="${image}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); display: block;">
+    </div>
+  ` : '';
+
   return `${topPart}
     <main class="main-content">
       ${heroSection}
+      ${coverImage}
       ${contentHtml}
     </main>
     ${bottomPart}`;
@@ -89,15 +100,21 @@ const posts = [];
 for (const file of files) {
   const content = fs.readFileSync(path.join(blogPostsDir, file), 'utf8');
   const parsed = fm(content);
-  const html = marked.parse(parsed.body);
+  let html = marked.parse(parsed.body);
+  html = html.replace(/<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g, '<div class="mermaid">$1</div>');
   const slug = file.replace('.md', '');
   
+  let cleanImage = parsed.attributes.image;
+  if (cleanImage && !cleanImage.startsWith('http')) {
+    cleanImage = cleanImage.replace(/^\.\.\//, '').replace(/^\.\//, '').replace(/^\//, '');
+  }
+
   posts.push({
-    slug,
     title: parsed.attributes.title,
     date: parsed.attributes.date,
     description: parsed.attributes.description,
-    image: parsed.attributes.image,
+    image: cleanImage,
+    slug,
     html
   });
 }
@@ -116,13 +133,16 @@ const postStyle = `
       .markdown-body p { margin-bottom: 24px; color: var(--text-dim); }
       .markdown-body a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-mid); text-underline-offset: 4px; transition: all 0.2s; }
       .markdown-body a:hover { color: var(--accent-green); text-decoration-color: var(--accent-green); }
-      .markdown-body ul, .markdown-body ol { margin-bottom: 24px; padding-left: 24px; color: var(--text-dim); }
+      .markdown-body ul { list-style-type: disc; margin-bottom: 24px; padding-left: 24px; color: var(--text-dim); }
+      .markdown-body ol { list-style-type: decimal; margin-bottom: 24px; padding-left: 24px; color: var(--text-dim); }
       .markdown-body li { margin-bottom: 10px; }
+      .markdown-body li::marker { color: var(--text); }
       .markdown-body pre { background: #111111; padding: 20px; border-radius: 12px; overflow-x: auto; margin-bottom: 28px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
       [data-theme="light"] .markdown-body pre { background: #f8f9fa; }
       .markdown-body code { font-family: 'Fira Code', monospace; font-size: 0.85em; }
       .markdown-body p code, .markdown-body li code { background: var(--surface2); padding: 3px 6px; border-radius: 6px; border: 1px solid var(--border-mid); color: var(--text); }
-      .markdown-body blockquote { border-left: 3px solid var(--text); padding-left: 20px; color: var(--text); margin: 32px 0; font-style: italic; background: var(--surface); padding: 20px; border-radius: 0 12px 12px 0; }
+      .markdown-body blockquote { border-left: 3px solid var(--text); color: var(--text); margin: 32px 0; font-style: italic; background: var(--surface); padding: 16px 20px; border-radius: 0 12px 12px 0; }
+      .markdown-body blockquote p:last-child { margin-bottom: 0; }
     </style>
 `;
 
@@ -221,12 +241,17 @@ for (const post of posts) {
   `;
   
   // Fix paths since posts are in /posts/ directory
-  let pageHtml = generatePage(postContent, post.title, post.description, '/posts/' + post.slug + '.html', post.image, false);
+  const postImgArg = post.image ? (post.image.startsWith('http') ? post.image : `../${post.image}`) : null;
+  let pageHtml = generatePage(postContent, post.title, post.description, '/posts/' + post.slug + '.html', postImgArg, false);
   pageHtml = pageHtml.replace(/href="index\.html"/g, 'href="../index.html"');
   pageHtml = pageHtml.replace(/href="gallery\.html"/g, 'href="../gallery.html"');
   pageHtml = pageHtml.replace(/href="blog\.html"/g, 'href="../blog.html"');
   pageHtml = pageHtml.replace(/src="https/g, 'src="https'); // absolute URLs are fine
   pageHtml = pageHtml.replace('</body>', '<script src="../assets/js/interactions.js"></script>\n</body>');
+  
+  if (post.html.includes('<div class="mermaid">')) {
+    pageHtml = pageHtml.replace('</body>', '<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"; mermaid.initialize({ startOnLoad: true, theme: "dark" });</script>\n</body>');
+  }
   
   fs.writeFileSync(path.join(__dirname, 'posts', `${post.slug}.html`), pageHtml);
   sitemapUrls.push(`https://m4nn.vercel.app/posts/${post.slug}.html`);
@@ -258,7 +283,7 @@ posts.forEach((post, i) => {
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
   const delayClass = delays[i % 4];
   // Default placeholder image if none is provided in frontmatter
-  const imgUrl = post.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60';
+  const imgUrl = post.image ? (post.image.startsWith('http') ? post.image : `./${post.image}`) : 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60';
   
   listHtml += `
     <a href="posts/${post.slug}.html" class="blog-row reveal ${delayClass} visible">
