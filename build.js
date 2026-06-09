@@ -80,7 +80,7 @@ function generatePage(contentHtml, title, description, urlPath, image, showHero 
 
   const coverImage = image ? `
     <div class="reveal reveal-delay-2" style="width: 100%; max-width: 1000px; height: 320px; margin: 0 auto 16px auto; border-radius: 12px; overflow: hidden; padding: 0 24px; box-sizing: border-box;">
-      <img src="${image}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); display: block;">
+      <img src="${image}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 12px; display: block;">
     </div>
   ` : '';
 
