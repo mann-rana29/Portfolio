@@ -13,6 +13,7 @@ const galleryHtml = fs.readFileSync(galleryHtmlPath, 'utf8');
 function generatePage(contentHtml, title, description, urlPath, image, showHero = true) {
   const fullUrl = `https://m4nn.vercel.app${urlPath}`;
   let rawImgUrl = image || '/assets/images/profile_logo.png';
+  rawImgUrl = rawImgUrl.replace(/^\.\.\//, '/'); // Remove leading ../
   if (!rawImgUrl.startsWith('/') && !rawImgUrl.startsWith('http')) {
     rawImgUrl = '/' + rawImgUrl;
   }
