@@ -17,7 +17,7 @@ When a user places a bet, the backend does this -
 
 ```
     placeBet(amount, betType) {
-        paymentService.transaction(amount);  //performs payment
+        paymentRepository(amount);  //saves payment in DB
         notificationService.notify(amount,betType); //notifies the user
         analyticsService.update(amount,betType); //updates analytics
     }
@@ -32,6 +32,71 @@ The ```placeBet``` function above is tightly coupled. This means that if there i
 This is not good for scaling. The application cannot handle traffic spikes and downtimes of services.
 
 ## The Solution
-Services should not be dependent on each other. The `paymentService` should be able to process the payment and return the result. It shouldn't care if `notitificationService` or `analyticsService` is working or not.
+Services should not be dependent on each other. The `paymentRepository` should be able to save the payment and return the result. It shouldn't care if `notificationService` or `analyticsService` is working or not.
 
 Therefore, instead of calling these services synchronously, we should use a messaging system to communicate between services. 
+
+Here comes the role of Pub/Sub or Kafka. First we will discuss about Pub/Sub.
+
+## Pub/Sub
+
+Pub/Sub is a messaging system where a service (producer) sends messages (events) to a channel. Any other services (subscriber) that subscribes to that channel can receive these messages. 
+- Every subscriber receives the message simultaneously.
+- Publisher doesn't know who the subscriber is or if it exists or not.
+- Subscriber doesn't know who the publisher is or where the messages are coming from.
+- Adding a new subscriber needs no change in producer or other services.
+
+Coming back to the story, we can have `bet:placed` as a channel and when a user places a bet, the `placeBet` function will work as a producer and publishes the event to the `bet:placed` channel.
+
+Then, `analyticsService` and `notificationService` will act as subscribers and subscribe to the `bet:placed` channel. They will receive the event and process it.
+
+### Redis Pub/Sub Internals
+1. **The Subscription Table**
+
+    Redis maintains an internal data structure called the subscription table. It is a dictionary that maps channel names to a list of client connections subscribed to that channel.
+
+    ```
+    'bet:placed' --> [client1, client2]
+    'bet:result' --> [client3, client1, client 4]
+    ```
+
+    When `PUBLISH 'bet:placed'` fires, then Redis looks up the channel in table, then iterates through the list of clients and writes message directly to each client's socket buffer.
+
+2. **Connection State**
+    
+    When a client connects to Redis, it is in a "normal" state. When it subscribes to a channel, it enters a "subscriber" state. In this state, the client can only send SUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, PUNSUBSCRIBE, PING and RESET commands. It cannot run GET, SET or any other redis commands.
+    
+    ```
+    SUBSCRIBE - enters subscriber state
+    UNSUBSCRIBE - exits subscriber state
+    PSUBSCRIBE - enters subscriber state with pattern matching
+    PUNSUBSCRIBE - exits subscriber state with pattern matching
+    PING - sends a PONG response
+    RESET - resets the connection
+
+    [pattern matching means 'bet:*' will subscribe to 'bet:placed', 'bet:result', etc.]
+    ```
+
+3. **Message Delivery**
+
+    Redis Pub/Sub has no persistence. This means that when a producer publishes a event, it gets delivered to all currently available subscribers. If any subscriber is offline at the moment of publishing, then it will never receive that message. That message is lost.
+
+    Redis doesn't store messages, so there is no message history. Subscribers can't retrieve old messages.
+
+4. **What PUBLISH Returns**
+
+    The PUBLISH command returns the number of subscribers that received the message. This is important because it lets the producer know if the message was received by any subscriber. This is how you detect that subscribers are down.
+
+You might be wondering if Pub/Sub solves the above problem, then what is the need of Kafka. So let's imagine a situation. 
+1. Let's say `notificationService` is down for 1 hour. 
+2. A user places a bet. 
+3. The message is published on the channel but since the subscriber is down, it never receives that message. 
+4. The message is also not stored so it gets lost and the user never gets notified. 
+
+This is not a good user experience.  
+
+## What is Kafka?
+
+In simple terms, Kafka is a distributed commit log.
+
+
