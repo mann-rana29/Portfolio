@@ -111,6 +111,67 @@ Kafka takes this concept and makes it distributed. The log is split across multi
     It is advised to use three or more brokers for fault tolerance. For our betting app, we will use only 1 broker.
 
 2. #### Topic
-    A topic is a named category of messages(eg - bet:placed, bet:result, etc). Producers write to topics. Consumers read from topics. Topics are the primary abstraction in Kafka like a table in a database but for stream of events.
+    A topic is a named category of messages. Producers write to topics. Consumers read from topics. Topics are the primary abstraction in Kafka like a table in a database but for stream of events.
+
+    ```
+    bet:placed          -->  All submitted bets will go here
+    bet:placed.retry    -->  Failed bets wait here to be retried
+    bet:placed.dlq      -->  Dead Letter Queue - Failed bets go here after max retries
+    ```
+
+3. #### Partition
+    Each topic is divided into partitions. A partition is an ordered, immutable sequence of messages. It is an individual segment of the commit log.
+
+    ```
+    Topic = 'bets:placed'
+    Partition 0 : [msg 0] -> [msg 3] -> ...
+    Partition 1 : [msg 1] -> [msg 4] -> ...
+    Partition 2 : [msg 2] -> [msg 5] -> ...
+    ```
+
+    Messages are distributed across partitions by : 
+    - Message Key Hash (same key -> always same partitions)
+    - Round Robin (no key -> distributed evenly)
+
+    More partitions means more throughput potential and more scalibility.
+
+4. #### Offset
+    An offset is the position of a message within a partition. It is an incrementing integer starting at `0`. The offset is how consumers track what they have and have not read.
+
+    ```
+    Partition 0 of topic 'bet:placed' 
+
+    Offset :  |   0   |    1   |   2   |    3  |    4   |
+              | Bet 1 |  Bet 2 | Bet 3 | Bet 4 |  Bet 5 |
+    ```
+
+    Lets say Consumer A (NotificationService) has committed offset 3 : 
+    - This means it has processed bet 1 , 2, 3, 4.
+    - Next read will fetch bet 5 (offset 4)
+
+    Now Consumer A crashes and restarts :
+    - Reads commited offset from Kafka : 3
+    - Resumes from offset 4
+    - Bet 5 is not lost
+
+    This is how kafka guarantees **atleast once delivery**.
+
+5. #### Producer
+    The producer is the client that publishes messages to Kafka topics. It is responsible for serializing the message, choosing the partition and handling send failures.
 
 
+6. #### Consumer and Consumer Groups
+    A consumer reads messages from one or more partitions. Consumer in the same consumer group share the work. Each partition is assigned to exactly one consumer in the group. This is **load balanced processing**.
+
+    ```
+    Topic : 'bet:placed' (3 partitions)        Consumer Group : 'bet-workers'
+
+    Partition 0              ------->                Worker Instance 1
+    Partition 1              ------->                Worker Instance 2
+    Partition 2              ------->                Worker Instance 3
+    ```
+    
+    When a consumer joins or leaves a group, Kafka triggers a rebalance. It reassigns partitions among available consumers. During rebalance, all consumers in the group stop processing. Rebalancing takes around 1 - 30 seconds.
+
+7. #### Retention, Replication and Fault Tolerance
+    Kafka retains messages based on time or size. Messages are not deleted when consumed they expire naturally. This allows multiple consumers to read the same topic independently and allows replaying the events.
