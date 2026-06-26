@@ -93,10 +93,24 @@ You might be wondering if Pub/Sub solves the above problem, then what is the nee
 3. The message is published on the channel but since the subscriber is down, it never receives that message. 
 4. The message is also not stored so it gets lost and the user never gets notified. 
 
-This is not a good user experience.  
+This is not a good user experience. So to overcome these limitations of Pub/Sub Kafka was developed.
 
 ## What is Kafka?
 
-In simple terms, Kafka is a distributed commit log.
+> *Kafka is a distributed commit log.*
+
+A commit log is an append only data structure. It is a ordered sequence of records. You can only add at the end of the file. You can read from any position and once a record is added, it can't be removed unless it expires based on time or size, etc.
+
+Kafka takes this concept and makes it distributed. The log is split across multiple machines called brokers, replicated for fault tolerance and made readable by multiple consumers simultaneously.
+
+### Kafka Concepts
+
+1. #### Broker
+    A kafka broker is a single kafka server. It is like a process running on a machine that stores messages and serves producers and consumers.
+
+    It is advised to use three or more brokers for fault tolerance. For our betting app, we will use only 1 broker.
+
+2. #### Topic
+    A topic is a named category of messages(eg - bet:placed, bet:result, etc). Producers write to topics. Consumers read from topics. Topics are the primary abstraction in Kafka like a table in a database but for stream of events.
 
 
