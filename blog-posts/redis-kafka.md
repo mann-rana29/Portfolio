@@ -9,7 +9,7 @@ image: "../assets/images/redis-kafka/redis-kafka-logos.png"
 To understand the architecture and differences of Pub/Sub and Kafka, We will go through a real world example. It will help you understand which one is best for your own application.
 
 ## The Story
-Imagine you are building a live football match betting app. Users can place bets on the matches. Whenever there is a live match, users place bets on the match. There can be different types of bets like guess the - winning team, exact score, number of yellow/red cards, etc.
+Imagine you are building a live football match betting app. Users can place bets on the matches. There can be different types of bets like guess the - winning team, exact score, number of yellow/red cards, etc.
 
 To place a bet, user has to select any type of bet, the amount he wants to bet and complete the payment. 
 
@@ -57,7 +57,7 @@ Then, `analyticsService` and `notificationService` will act as subscribers and s
 
     ```
     'bet:placed' --> [client1, client2]
-    'bet:result' --> [client3, client1, client 4]
+     'bet:result' --> [client3, client1, client 4]
     ```
 
     When `PUBLISH 'bet:placed'` fires, then Redis looks up the channel in table, then iterates through the list of clients and writes message directly to each client's socket buffer.
@@ -67,12 +67,12 @@ Then, `analyticsService` and `notificationService` will act as subscribers and s
     When a client connects to Redis, it is in a "normal" state. When it subscribes to a channel, it enters a "subscriber" state. In this state, the client can only send SUBSCRIBE, PSUBSCRIBE, UNSUBSCRIBE, PUNSUBSCRIBE, PING and RESET commands. It cannot run GET, SET or any other redis commands.
     
     ```
-    SUBSCRIBE - enters subscriber state
-    UNSUBSCRIBE - exits subscriber state
-    PSUBSCRIBE - enters subscriber state with pattern matching
-    PUNSUBSCRIBE - exits subscriber state with pattern matching
-    PING - sends a PONG response
-    RESET - resets the connection
+    SUBSCRIBE    - enters subscriber state 
+     UNSUBSCRIBE  - exits subscriber state 
+     PSUBSCRIBE   - enters subscriber state with pattern matching 
+     PUNSUBSCRIBE - exits subscriber state with pattern matching 
+     PING         - sends a PONG response 
+     RESET        - resets the connection 
 
     [pattern matching means 'bet:*' will subscribe to 'bet:placed', 'bet:result', etc.]
     ```
@@ -114,9 +114,9 @@ Kafka takes this concept and makes it distributed. The log is split across multi
     A topic is a named category of messages. Producers write to topics. Consumers read from topics. Topics are the primary abstraction in Kafka like a table in a database but for stream of events.
 
     ```
-    bet:placed          -->  All submitted bets will go here
-    bet:placed.retry    -->  Failed bets wait here to be retried
-    bet:placed.dlq      -->  Dead Letter Queue - Failed bets go here after max retries
+    bet:placed          -->  All submitted bets will go here 
+     bet:placed.retry    -->  Failed bets wait here to be retried 
+     bet:placed.dlq      -->  Dead Letter Queue - Failed bets go here after max retries 
     ```
 
 3. #### Partition
@@ -124,9 +124,9 @@ Kafka takes this concept and makes it distributed. The log is split across multi
 
     ```
     Topic = 'bets:placed'
-    Partition 0 : [msg 0] -> [msg 3] -> ...
-    Partition 1 : [msg 1] -> [msg 4] -> ...
-    Partition 2 : [msg 2] -> [msg 5] -> ...
+     Partition 0 : [msg 0] -> [msg 3] -> ... 
+     Partition 1 : [msg 1] -> [msg 4] -> ... 
+     Partition 2 : [msg 2] -> [msg 5] -> ... 
     ```
 
     Messages are distributed across partitions by : 
@@ -141,8 +141,8 @@ Kafka takes this concept and makes it distributed. The log is split across multi
     ```
     Partition 0 of topic 'bet:placed' 
 
-    Offset :  |   0   |    1   |   2   |    3  |    4   |
-              | Bet 1 |  Bet 2 | Bet 3 | Bet 4 |  Bet 5 |
+     Offset :  |   0   |    1   |   2   |    3  |    4   |  
+               | Bet 1 |  Bet 2 | Bet 3 | Bet 4 |  Bet 5 |  
     ```
 
     Lets say Consumer A (NotificationService) has committed offset 3 : 
@@ -164,14 +164,22 @@ Kafka takes this concept and makes it distributed. The log is split across multi
     A consumer reads messages from one or more partitions. Consumer in the same consumer group share the work. Each partition is assigned to exactly one consumer in the group. This is **load balanced processing**.
 
     ```
-    Topic : 'bet:placed' (3 partitions)        Consumer Group : 'bet-workers'
+    Topic : 'bet:placed' (3 partitions)        Consumer Group : 'bet-workers' 
 
-    Partition 0              ------->                Worker Instance 1
-    Partition 1              ------->                Worker Instance 2
-    Partition 2              ------->                Worker Instance 3
+     Partition 0              ------->                Worker Instance 1 
+     Partition 1              ------->                Worker Instance 2 
+     Partition 2              ------->                Worker Instance 3 
     ```
     
     When a consumer joins or leaves a group, Kafka triggers a rebalance. It reassigns partitions among available consumers. During rebalance, all consumers in the group stop processing. Rebalancing takes around 1 - 30 seconds.
 
 7. #### Retention, Replication and Fault Tolerance
     Kafka retains messages based on time or size. Messages are not deleted when consumed they expire naturally. This allows multiple consumers to read the same topic independently and allows replaying the events.
+
+
+Now that i have explained architectures of both pub/sub and kafka. It should be pretty clear how Kafka is more reliable and safe in comparison to pub/sub model. But that doesn't mean we should never use pub/sub. We should always choose the model that is best for our application according to its use cases. 
+
+For example, we should use pub/sub for live score updates - if a user is online he should get the message and if he is offline then it's okay if he doesn't get it. On the other hand if he has placed a bet then it is important that he gets the message no matter what. In this case we should use kafka.
+
+
+Hope you found this article useful! Do let me know in comments below. Also let me know if you have any questions. I will be happy to answer them.
