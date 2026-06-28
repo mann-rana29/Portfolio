@@ -38,8 +38,8 @@ function generatePage(contentHtml, title, description, urlPath, image, showHero 
   topPart = topPart.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${fullUrl}" />`);
 
   // Fix Navbar active states: Shift from Gallery to Blog
-  topPart = topPart.replace(/<a href="gallery\.html"[^>]*>Gallery<\/a>/, '<a href="gallery.html" onclick="if(typeof closeMobile !== \\'undefined\\') closeMobile()">Gallery</a>');
-  topPart = topPart.replace(/<a href="blog\.html"[^>]*>Blog<\/a>/, '<a href="blog.html" style="color: var(--text);" onclick="if(typeof closeMobile !== \\'undefined\\') closeMobile()">Blog</a>');
+  topPart = topPart.replace(/<a href="gallery\.html"[^>]*>Gallery<\/a>/, `<a href="gallery.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Gallery</a>`);
+  topPart = topPart.replace(/<a href="blog\.html"[^>]*>Blog<\/a>/, `<a href="blog.html" style="color: var(--text);" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Blog</a>`);
 
   // Inject Fira Code font for code blocks and dates
   topPart = topPart.replace('</head>', `
