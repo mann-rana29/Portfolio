@@ -1696,8 +1696,6 @@
       .cursor { display: none !important; }
     }
   
-   }
-  
     /* Improved Mobile Footer */
     .site-footer {
       margin-top: auto;
@@ -1755,9 +1753,8 @@
           Mann Rana
         </a>
         <div class="nav-links">
-          <a href="#projects">Projects</a>
+          
           <a href="#about">About</a>
-          <a href="#stack">Stack</a>
           <a href="gallery.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Gallery</a>
           <a href="blog.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Blog</a>
         </div>
@@ -1792,10 +1789,9 @@
         </div>
       </div>
       <div class="mobile-menu" id="mobileMenu">
-        <a href="#projects" onclick="closeMobile()">Projects</a>
+        
         <a href="#about" onclick="closeMobile()">About</a>
-        <a href="#stack" onclick="closeMobile()">Stack</a>
-        <a href="gallery.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Gallery</a>
+          <a href="gallery.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Gallery</a>
         <a href="blog.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Blog</a>
       </div>
     </nav>
@@ -1850,6 +1846,122 @@
         </div>
       </div>
     </section>
+
+        <!-- ── TECH STACK ── -->
+    <section id="stack" style="padding: 56px 20px;">
+      <div class="section-label reveal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+        Tech Stack
+      </div>
+            
+<style>
+.tech-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+.tech-icon-wrapper img {
+  transition: transform 0.2s;
+}
+.tech-icon-wrapper:hover img {
+  transform: translateY(-4px);
+}
+.tech-icon-wrapper::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--surface2);
+  color: var(--text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+.tech-icon-wrapper:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px);
+}
+</style>
+      <div class="tech-grid reveal" style="max-width: 800px; margin: 0 auto;">
+        <div class="tech-icon-wrapper" data-tooltip="Python">
+          <img src="https://skillicons.dev/icons?i=py" alt="Python" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Java">
+          <img src="https://skillicons.dev/icons?i=java" alt="Java" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="HTML">
+          <img src="https://skillicons.dev/icons?i=html" alt="HTML" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="CSS">
+          <img src="https://skillicons.dev/icons?i=css" alt="CSS" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="JavaScript">
+          <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="TypeScript">
+          <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Spring Boot">
+          <img src="https://skillicons.dev/icons?i=spring" alt="Spring Boot" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="FastAPI">
+          <img src="https://skillicons.dev/icons?i=fastapi" alt="FastAPI" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Redis">
+          <img src="https://skillicons.dev/icons?i=redis" alt="Redis" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="PostgreSQL">
+          <img src="https://skillicons.dev/icons?i=postgresql" alt="PostgreSQL" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="MySQL">
+          <img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Docker">
+          <img src="https://skillicons.dev/icons?i=docker" alt="Docker" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Kafka">
+          <img src="https://skillicons.dev/icons?i=kafka" alt="Kafka" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Git">
+          <img src="https://skillicons.dev/icons?i=git" alt="Git" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="GitHub">
+          <img src="https://skillicons.dev/icons?i=github" alt="GitHub" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Postman">
+          <img src="https://skillicons.dev/icons?i=postman" alt="Postman" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Tailwind CSS">
+          <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="Next.js">
+          <img src="https://skillicons.dev/icons?i=next" alt="Next.js" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="React">
+          <img src="https://skillicons.dev/icons?i=react" alt="React" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="IntelliJ IDEA">
+          <img src="https://skillicons.dev/icons?i=idea" alt="IntelliJ IDEA" />
+        </div>
+        <div class="tech-icon-wrapper" data-tooltip="VS Code">
+          <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" />
+        </div>
+      </div>
+    </section>
+
 
     <!-- ── EXPERIENCE ── -->
     <section id="experience">
@@ -1918,122 +2030,6 @@
         </div>
       </div>
     </section>
-
-     <!-- ── TECH STACK ── -->
-    <section id="stack" style="padding: 56px 20px;">
-      <div class="section-label reveal">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 18 22 12 16 6" />
-          <polyline points="8 6 2 12 8 18" />
-        </svg>
-        Tech Stack
-      </div>
-            
-<style>
-.tech-icon-wrapper {
-  position: relative;
-  display: inline-flex;
-  cursor: pointer;
-}
-.tech-icon-wrapper img {
-  transition: transform 0.2s;
-}
-.tech-icon-wrapper:hover img {
-  transform: translateY(-4px);
-}
-.tech-icon-wrapper::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-4px);
-  background: var(--surface2);
-  color: var(--text);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s, transform 0.2s;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  z-index: 10;
-}
-.tech-icon-wrapper:hover::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(-8px);
-}
-</style>
-      <div class="tech-grid reveal" style="place-items: center;">
-        <div class="tech-icon-wrapper" data-tooltip="Python">
-          <img src="https://skillicons.dev/icons?i=py" alt="Python" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Java">
-          <img src="https://skillicons.dev/icons?i=java" alt="Java" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="HTML">
-          <img src="https://skillicons.dev/icons?i=html" alt="HTML" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="CSS">
-          <img src="https://skillicons.dev/icons?i=css" alt="CSS" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="JavaScript">
-          <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="TypeScript">
-          <img src="https://skillicons.dev/icons?i=ts" alt="TypeScript" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Spring Boot">
-          <img src="https://skillicons.dev/icons?i=spring" alt="Spring Boot" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="FastAPI">
-          <img src="https://skillicons.dev/icons?i=fastapi" alt="FastAPI" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Redis">
-          <img src="https://skillicons.dev/icons?i=redis" alt="Redis" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="PostgreSQL">
-          <img src="https://skillicons.dev/icons?i=postgresql" alt="PostgreSQL" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="MySQL">
-          <img src="https://skillicons.dev/icons?i=mysql" alt="MySQL" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Docker">
-          <img src="https://skillicons.dev/icons?i=docker" alt="Docker" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Kafka">
-          <img src="https://skillicons.dev/icons?i=kafka" alt="Kafka" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Git">
-          <img src="https://skillicons.dev/icons?i=git" alt="Git" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="GitHub">
-          <img src="https://skillicons.dev/icons?i=github" alt="GitHub" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Postman">
-          <img src="https://skillicons.dev/icons?i=postman" alt="Postman" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Tailwind CSS">
-          <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="Next.js">
-          <img src="https://skillicons.dev/icons?i=next" alt="Next.js" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="React">
-          <img src="https://skillicons.dev/icons?i=react" alt="React" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="IntelliJ IDEA">
-          <img src="https://skillicons.dev/icons?i=idea" alt="IntelliJ IDEA" />
-        </div>
-        <div class="tech-icon-wrapper" data-tooltip="VS Code">
-          <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" />
-        </div>
-      </div>
-    </section>
-
 
 
     <!-- ── PROJECTS ── -->
@@ -2463,7 +2459,7 @@
           <div class="footer-name">Mann Rana</div>
           <div class="footer-copy">&copy; 2026 | Built with imagination ⚡</div>
         </div>
-        <div class="footer-right" style="display: flex; gap: 16px; justify-content: flex-end; align-items: center;">
+        <div class="footer-right">
           <a href="mailto:[mannworks247@gmail.com]" class="footer-icon-btn" title="Email">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
