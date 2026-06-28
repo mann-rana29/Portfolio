@@ -1762,8 +1762,7 @@
           <a href="blog.html" onclick="if(typeof closeMobile !== 'undefined') closeMobile()">Blog</a>
         </div>
         <div class="nav-right">
-          <a href="https://drive.google.com/file/d/135HfW6uny6RM6lz4nQ1odA4mQ-AbQ37H/view?usp=drive_link" class="btn-sm primary"
-            target="_blank">Resume</a>
+          <a href="https://drive.google.com/file/d/135HfW6uny6RM6lz4nQ1odA4mQ-AbQ37H/view?usp=drive_link" class="btn-sm btn-resume" target="_blank">Resume</a>
           <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
             <svg class="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2395,7 +2394,59 @@
             padding-bottom: 80px !important;
           }
         }
-      </style>
+      
+    /* RGB Radio Channel Flow Border for Resume */
+    .btn-resume {
+      position: relative;
+      background: var(--surface2);
+      color: var(--text);
+      border: none !important;
+      padding: 0 16px;
+      overflow: hidden;
+      z-index: 1;
+      font-weight: 600;
+    }
+    
+    .btn-resume::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg, 
+        #ff0055, #00f2fe, #4facfe, #ff0844, #ff0055
+      );
+      animation: btnSpin 3s linear infinite;
+      z-index: -2;
+    }
+    
+    .btn-resume::after {
+      content: "";
+      position: absolute;
+      inset: 1.5px;
+      background: var(--bg);
+      border-radius: 5px;
+      z-index: -1;
+      transition: background 0.3s;
+    }
+
+    .btn-resume:hover::after {
+      background: var(--surface);
+    }
+    
+    .btn-resume:hover {
+      color: var(--text);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 242, 254, 0.3);
+    }
+
+    @keyframes btnSpin {
+      100% { transform: rotate(360deg); }
+    }
+
+</style>
 
       <button id="like-btn-portfolio-home" class="floating-like" title="Click Me">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
