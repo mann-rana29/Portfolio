@@ -2,7 +2,7 @@
 title: "Pub/Sub vs Kafka"
 date: "2026-06-21"
 description: "This blog post explains how Redis Pub/Sub and Apache Kafka work and how they differ from each other."
-image: "../assets/images/redis-kafka/redis-kafka-logos.png"
+image: "../assets/images/redis-kafka/redis-kafka-banner.png"
 ---
 
 
