@@ -1,3 +1,6 @@
+if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth <= 768) {
+  document.body.classList.remove('cursor-hidden');
+} else {
 function initCursor() {
     const cursor = document.createElement("div");
     cursor.id = "custom-cursor";
@@ -98,4 +101,6 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCursor);
 } else {
     initCursor();
+}
+
 }
