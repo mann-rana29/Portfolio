@@ -20,6 +20,42 @@ async function fetchLikes(pageId) {
 }
 
 /**
+ * Create star particles on click
+ */
+function createStarParticles(btn) {
+  const rect = btn.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  for (let i = 0; i < 8; i++) {
+    const star = document.createElement('div');
+    star.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="#eab308" stroke="#eab308" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+    star.style.position = 'fixed';
+    star.style.left = centerX + 'px';
+    star.style.top = centerY + 'px';
+    star.style.transform = 'translate(-50%, -50%)';
+    star.style.pointerEvents = 'none';
+    star.style.zIndex = '999';
+    star.style.transition = 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+    document.body.appendChild(star);
+
+    // Randomize angle and distance
+    const angle = (Math.random() * Math.PI * 2);
+    const distance = 40 + Math.random() * 40;
+    
+    // Force reflow
+    star.getBoundingClientRect();
+
+    star.style.transform = `translate(-50%, -50%) translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0) rotate(${Math.random() * 180}deg)`;
+    star.style.opacity = '0';
+
+    setTimeout(() => {
+      star.remove();
+    }, 600);
+  }
+}
+
+/**
  * Toggle the like status for a given page_id (Optimistic UI)
  */
 async function toggleLike(pageId) {
@@ -49,6 +85,7 @@ async function toggleLike(pageId) {
     countEl.textContent = currentCount + 1;
     btn.classList.add('liked');
     localStorage.setItem(`liked_${pageId}`, 'true');
+    createStarParticles(btn);
     
     // Server fetch
     try {

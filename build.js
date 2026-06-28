@@ -231,19 +231,19 @@ for (const post of posts) {
               transform: scale(0.9);
             }
             .minimal-like.liked {
-              color: #ef4444;
+              color: #eab308;
               cursor: default;
             }
             .minimal-like.liked svg {
-              fill: #ef4444;
-              stroke: #ef4444;
+              fill: #eab308;
+              stroke: #eab308;
               animation: heartBeat 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
           </style>
 
           <button id="like-btn-post-${post.slug}" class="minimal-like" title="Like Post">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </svg>
             <span id="like-count-post-${post.slug}">0</span>
           </button>
@@ -325,7 +325,13 @@ posts.forEach((post, i) => {
 });
 listHtml += '</div></section>';
 
-fs.writeFileSync(path.join(__dirname, 'blog.html'), generatePage(listHtml, 'Blog', 'Read the latest software engineering articles and logs by Mann Rana.', '/blog.html', null));
+let blogPageHtml = generatePage(listHtml, 'Blog', 'Read the latest software engineering articles and logs by Mann Rana.', '/blog.html', null);
+// Revert the asset paths back to root level for blog.html
+blogPageHtml = blogPageHtml.replace(/href="\.\.\/assets\//g, 'href="assets/');
+blogPageHtml = blogPageHtml.replace(/src="\.\.\/assets\//g, 'src="assets/');
+blogPageHtml = blogPageHtml.replace(/content="\.\.\/assets\//g, 'content="assets/');
+
+fs.writeFileSync(path.join(__dirname, 'blog.html'), blogPageHtml);
 
 // 4. Generate sitemap.xml
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
