@@ -43,7 +43,8 @@ function generatePage(contentHtml, title, description, urlPath, image, showHero 
 
   // Inject Fira Code font for code blocks and dates
   topPart = topPart.replace('</head>', `
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   </head>`);
 
   // Fix relative paths for assets inside the posts folder
@@ -153,7 +154,8 @@ const postStyle = `
     <style>
       .markdown-body { padding: 56px 24px; max-width: 720px; margin: 0 auto; color: var(--text); line-height: 1.8; font-size: 1.05rem; overflow-wrap: break-word; word-wrap: break-word; overflow-x: hidden; width: 100%; }
       .markdown-body img { max-width: 100%; height: auto; border-radius: 8px; }
-      .markdown-body h1 { font-size: 2.5rem; margin-bottom: 32px; letter-spacing: -0.03em; font-weight: 600; line-height: 1.2; }
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 { font-family: 'Playfair Display', serif; }
+      .markdown-body h1 { font-size: 3rem; margin-bottom: 32px; letter-spacing: -0.02em; font-weight: 500; line-height: 1.1; }
       .markdown-body h2 { font-size: 1.75rem; margin-top: 48px; margin-bottom: 16px; font-weight: 500; letter-spacing: -0.02em; }
       .markdown-body h3 { font-size: 1.35rem; margin-top: 32px; margin-bottom: 12px; font-weight: 500; }
       .markdown-body p { margin-bottom: 24px; color: var(--text-dim); }
@@ -241,7 +243,7 @@ for (const post of posts) {
             }
           </style>
 
-          <button id="like-btn-post-${post.slug}" class="minimal-like" title="Like Post">
+          <button id="like-btn-post-${post.slug}" class="minimal-like" title="Click Me">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
             </svg>
