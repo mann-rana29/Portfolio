@@ -286,7 +286,7 @@ for (const post of posts) {
 // 3. Generate blog list page
 const blogListStyle = `
     <style>
-      .blog-list { padding: 40px 24px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+      .blog-list { padding: 40px 24px; max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
       .blog-row { display: grid; grid-template-columns: 140px 1fr; gap: 24px; padding: 24px 16px; border-bottom: 1px solid var(--border-mid); text-decoration: none; transition: all 0.2s ease; border-radius: 8px; align-items: start; }
       .blog-image { width: 140px; height: 90px; border-radius: 8px; overflow: hidden; background: var(--surface2); }
       .blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }

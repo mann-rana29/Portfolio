@@ -125,7 +125,7 @@
        LAYOUT
     ════════════════════════════════════════ */
     .container {
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       padding: 0 24px;
     }
@@ -134,7 +134,7 @@
       border-left: 1px solid var(--border);
       border-right: 1px solid var(--border);
       background: var(--bg);
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       position: relative;
     }
@@ -213,7 +213,7 @@
     }
 
     .nav-inner {
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       padding: 0 16px;
       height: 48px;
@@ -1092,6 +1092,10 @@
       overflow: hidden;
       border: 1px solid var(--border-mid);
       perspective: 1000px;
+    }
+
+    .project-showcase * {
+      pointer-events: none;
     }
 
     .project-showcase::after {
@@ -2245,8 +2249,8 @@
       </div> -->
 
       <div class="reveal" style="display: flex; justify-content: center; width: 100%; margin-bottom: 40px; overflow-x: auto; padding-bottom: 10px;">
-        <img class="gh-graph-dark" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px; filter: invert(1) hue-rotate(180deg) brightness(1.2);" alt="GitHub Contributions Grid Dark" />
-        <img class="gh-graph-light" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 800px; height: auto; min-width: 600px;" alt="GitHub Contributions Grid Light" />
+        <img class="gh-graph-dark" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 850px; height: auto; min-width: 600px; filter: invert(1) hue-rotate(180deg) brightness(1.2);" alt="GitHub Contributions Grid Dark" />
+        <img class="gh-graph-light" src="https://ghchart.rshah.org/19a5ff/mann-rana29" style="width: 100%; max-width: 850px; height: auto; min-width: 600px;" alt="GitHub Contributions Grid Light" />
       </div>
     </section>
 
@@ -2592,12 +2596,12 @@
       currentMediaList = mediaList;
       currentIndex = index;
       updateLightbox();
-      projectLightbox.classList.add('active');
+      lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
-      projectLightbox.classList.remove('active');
+      lightbox.classList.remove('active');
       document.body.style.overflow = '';
       lbContent.innerHTML = ''; // stops video
     }
@@ -2618,7 +2622,7 @@
       updateLightbox();
     });
 
-    projectLightbox.addEventListener('click', (e) => {
+    lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox || e.target === lbContent) closeLightbox();
     });
 
@@ -2671,55 +2675,65 @@
 
       let currentProject = '';
       let currentSlideIndex = 0;
-      const projectLightbox = document.getElementById('lightbox');
-      const lightboxContent = document.getElementById('lightboxContent');
-
+      let dynProjectLightbox = null;
+      let dynLightboxContent = null;
+      
       window.openProjectLightbox = function(projectId) {
         currentProject = projectId;
         currentSlideIndex = 0;
-        lightbox.classList.add('active');
+        
+        if (!dynProjectLightbox) {
+          dynProjectLightbox = document.createElement('div');
+          dynProjectLightbox.className = 'lightbox';
+          dynProjectLightbox.innerHTML = `
+            <button class="lightbox-close" onclick="closeProjectLightbox()">×</button>
+            <button class="lightbox-nav lb-prev" onclick="changeSlide(-1)">‹</button>
+            <div class="lightbox-content"></div>
+            <button class="lightbox-nav lb-next" onclick="changeSlide(1)">›</button>
+          `;
+          document.body.appendChild(dynProjectLightbox);
+          
+          dynLightboxContent = dynProjectLightbox.querySelector('.lightbox-content');
+          
+          dynProjectLightbox.addEventListener('click', (e) => {
+            if (e.target === dynProjectLightbox || e.target === dynLightboxContent) {
+              closeProjectLightbox();
+            }
+          });
+        }
+        
+        dynProjectLightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
         renderSlide();
       };
 
-      window.closeLightbox = function() {
-        lightbox.classList.remove('active');
-        lightboxContent.innerHTML = '';
+      window.closeProjectLightbox = function() {
+        if (dynProjectLightbox) {
+          dynProjectLightbox.classList.remove('active');
+          document.body.style.overflow = '';
+          if (dynLightboxContent) dynLightboxContent.innerHTML = '';
+        }
       };
 
       window.changeSlide = function(dir) {
-        if (!currentProject || !projectMedia[currentProject]) return;
+        if (!currentProject || !projectMedia[currentProject] || !dynLightboxContent) return;
         const mediaArr = projectMedia[currentProject];
         currentSlideIndex = (currentSlideIndex + dir + mediaArr.length) % mediaArr.length;
         renderSlide();
       };
 
       function renderSlide() {
-        if (!currentProject || !projectMedia[currentProject]) return;
+        if (!currentProject || !projectMedia[currentProject] || !dynLightboxContent) return;
         const media = projectMedia[currentProject][currentSlideIndex];
         if (media.type === 'img') {
-          lightboxContent.innerHTML = `<img src="${media.src}" alt="Screenshot" />`;
+          dynLightboxContent.innerHTML = `<img src="${media.src}" alt="Screenshot" />`;
         } else if (media.type === 'video') {
-          lightboxContent.innerHTML = `<video controls autoplay playsinline style="max-width: 100%; max-height: 85vh; border-radius: 8px;"><source src="${media.src}" type="video/mp4"></video>`;
+          dynLightboxContent.innerHTML = `<video controls autoplay playsinline style="max-width: 100%; max-height: 85vh; border-radius: 8px;"><source src="${media.src}" type="video/mp4"></video>`;
         }
       }
-
-      lightbox.addEventListener('click', (e) => {
-        if (e.target === projectLightbox) closeLightbox();
-      });
-
     
   </script>
 
-  <!-- ── LIGHTBOX OVERLAY ── -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <button class="lightbox-nav lb-prev" onclick="changeSlide(-1)">‹</button>
-    <div class="lightbox-content" id="lightboxContent">
-      <!-- Media inserted here dynamically -->
-    </div>
-    <button class="lightbox-nav lb-next" onclick="changeSlide(1)">›</button>
-  </div>
-  
   <script src="assets/js/interactions.js"></script>
 </body>
 
