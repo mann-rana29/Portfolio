@@ -60,13 +60,13 @@ function createStarParticles(btn) {
  */
 async function toggleLike(pageId) {
   const isLiked = localStorage.getItem(`liked_${pageId}`);
-  const countEl = document.getElementById(`like-count-${pageId}`);
+  const countEls = document.querySelectorAll(`#like-count-${pageId}`);
   const btn = document.getElementById(`like-btn-${pageId}`);
-  let currentCount = parseInt(countEl.textContent) || 0;
+  let currentCount = parseInt(countEls[0]?.textContent) || 0;
 
   if (isLiked) {
     // Optimistic Unlike
-    countEl.textContent = Math.max(0, currentCount - 1);
+    countEls.forEach(el => el.textContent = Math.max(0, currentCount - 1));
     btn.classList.remove('liked');
     localStorage.removeItem(`liked_${pageId}`);
     
@@ -76,13 +76,13 @@ async function toggleLike(pageId) {
     } catch (e) {
       console.error('Error unliking:', e);
       // Revert if error
-      countEl.textContent = currentCount;
+      countEls.forEach(el => el.textContent = currentCount);
       btn.classList.add('liked');
       localStorage.setItem(`liked_${pageId}`, 'true');
     }
   } else {
     // Optimistic Like
-    countEl.textContent = currentCount + 1;
+    countEls.forEach(el => el.textContent = currentCount + 1);
     btn.classList.add('liked');
     localStorage.setItem(`liked_${pageId}`, 'true');
     createStarParticles(btn);
@@ -93,7 +93,7 @@ async function toggleLike(pageId) {
     } catch (e) {
       console.error('Error liking:', e);
       // Revert if error
-      countEl.textContent = currentCount;
+      countEls.forEach(el => el.textContent = currentCount);
       btn.classList.remove('liked');
       localStorage.removeItem(`liked_${pageId}`);
     }
@@ -141,7 +141,11 @@ async function submitComment(pageId, name, content) {
 // UI Handlers
 
 function updateLikeUI(pageId, count) {
-  const countEl = document.getElementById(`like-count-${pageId}`);
+  const countEls = document.querySelectorAll(`#like-count-${pageId}`);
+  countEls.forEach(el => {
+    el.textContent = count;
+  });
+}`);
   if (countEl) {
     countEl.textContent = count;
   }
