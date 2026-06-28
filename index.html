@@ -1895,7 +1895,7 @@
   transform: translateX(-50%) translateY(-8px);
 }
 </style>
-      <div class="tech-grid reveal" style="max-width: 800px; margin: 0 auto;">
+      <div class="tech-grid reveal">
         <div class="tech-icon-wrapper" data-tooltip="Python">
           <img src="https://skillicons.dev/icons?i=py" alt="Python" />
         </div>
@@ -2440,6 +2440,14 @@
 
     @keyframes btnSpin {
       100% { transform: rotate(360deg); }
+    }
+
+
+    @media (max-width: 768px) {
+      .tech-grid {
+        max-width: fit-content;
+        margin: 0 auto;
+      }
     }
 
 </style>
